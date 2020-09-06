@@ -253,6 +253,7 @@ module.exports = {
 		},
 		fontFamily: {
 			sans: [
+				'Open Sans',
 				'system-ui',
 				'-apple-system',
 				'BlinkMacSystemFont',
