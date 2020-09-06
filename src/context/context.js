@@ -19,11 +19,17 @@ function AppContextProvider({ children }) {
 		try {
 			navigator.geolocation.getCurrentPosition(
 				({ coords: { latitude, longitude }, timestamp }) => {
-					axios
-						.get(
-							`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${process.env.REACT_APP_OPEN_WEATHER_API_KEY}`,
-						)
-						.then(({ data }) => {
+					Promise.all([
+						axios.get('https://api.openweathermap.org/data/2.5/weather', {
+							params: {
+								appid: process.env.REACT_APP_OPEN_WEATHER_API_KEY,
+								lat: latitude,
+								lon: longitude,
+								units: 'metric',
+							},
+						}),
+					])
+						.then(([{ data: currentData }]) => {
 							//Filter with destructuring
 							const {
 								weather,
@@ -43,7 +49,7 @@ function AppContextProvider({ children }) {
 								sys: { country, sunrise, sunset },
 								name,
 								timezone,
-							} = data;
+							} = currentData;
 
 							dispatch({
 								type: types.SET_CURRENT,
@@ -85,7 +91,7 @@ function AppContextProvider({ children }) {
 				next48Hours: state.next48Hours,
 				next7Days: state.next7Days,
 			}}>
-			<AppContextDispatch.Provider value={{ current: null }}>
+			<AppContextDispatch.Provider value={{}}>
 				{children}
 			</AppContextDispatch.Provider>
 		</AppContext.Provider>

@@ -3,7 +3,6 @@ import { useAppContextState } from '../../context/context';
 import { useSpring, animated } from 'react-spring';
 import axios from 'axios';
 import Settings from './Settings';
-
 /* eslint-disable */
 
 function Home() {
@@ -26,6 +25,7 @@ function Home() {
 		name,
 		timezone,
 	} = useAppContextState().current;
+
 	const [settingsOpen, setSettingsOpen] = useState(false);
 	const [backgroundImageURL, setBackgroundImageURL] = useState('');
 	const [slideDown, slideDownSet] = useSpring(() => ({
@@ -47,7 +47,7 @@ function Home() {
 		if (!weather) return;
 
 		axios
-			.get('https://pixabay.com/api/', {
+			.get('https://pixabay.com/api', {
 				params: {
 					key: process.env.REACT_APP_PIXABAY_API_KEY,
 					q: weather[0].main,
