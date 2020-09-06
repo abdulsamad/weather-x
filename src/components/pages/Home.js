@@ -94,28 +94,38 @@ function Home() {
 				</section>
 
 				<animated.section style={fadeDown} className='mb-5 z-10'>
-					<h4 className='text-lg'>
-						Humidity <span className='ml-2'>{humidity}%</span>
-					</h4>
-					<h4 className='text-lg'>
-						Pressure <span className='ml-2'>{pressure}mbar</span>
-					</h4>
-					{wind && (
-						<>
-							<h4 className='text-lg'>
-								Wind Speed <span className='ml-2'>{wind.speed}m/s</span>
-							</h4>
-							<h4 className='text-lg'>
-								Wind Direction <span className='ml-2'>{wind.deg}&deg;</span>
-							</h4>{' '}
-						</>
-					)}
-					<h4 className='text-lg'>
-						Sunrise <span className='ml-2'>{sunrise}</span>
-					</h4>
-					<h4 className='text-lg'>
-						Sunset <span className='ml-2'>{sunset}</span>
-					</h4>
+					<table className='table'>
+						<tbody>
+							<tr>
+								<td className='px-2'>Humidity</td>
+								<td className='px-2'>{humidity}%</td>
+							</tr>
+							<tr>
+								<td className='px-2'>Pressure</td>
+								<td className='px-2'>{pressure} mbar</td>
+							</tr>
+							{wind && (
+								<>
+									<tr>
+										<td className='px-2'>Wind Speed</td>
+										<td className='px-2'>{wind.speed} m/s</td>
+									</tr>
+									<tr>
+										<td className='px-2'>Wind Direction</td>
+										<td className='px-2'>{wind.deg}&deg;</td>
+									</tr>
+								</>
+							)}
+							<tr>
+								<td className='px-2'>Sunrise</td>
+								<td className='px-2'>{sunrise}</td>
+							</tr>
+							<tr>
+								<td className='px-2'>Sunset</td>
+								<td className='px-2'>{sunset}</td>
+							</tr>
+						</tbody>
+					</table>
 				</animated.section>
 			</div>
 
