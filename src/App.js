@@ -1,12 +1,70 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { AppContextProvider } from './context/context';
+import { useSprings, animated } from 'react-spring';
+import { useGesture } from 'react-use-gesture';
+import Home from './components/layout/Home';
+
+const pages = [<Home />];
 
 function App() {
+	const index = useRef(0);
+
+	/* (Lodash Clamp in Vanilla) */
+	const clamp = (num, clamp, higher) => {
+		return higher
+			? Math.min(Math.max(num, clamp), higher)
+			: Math.min(num, clamp);
+	};
+
+	const [props, set] = useSprings(pages.length, (i) => ({
+		x: i * window.innerWidth,
+		display: 'block',
+	}));
+
+	const bind = useGesture({
+		onDrag: ({
+			down,
+			delta: [xDelta],
+			direction: [xDir],
+			distance,
+			cancel,
+		}) => {
+			if (down && distance > window.innerWidth / 2) {
+				cancel(
+					(index.current = clamp(
+						index.current + (xDir > 0 ? -1 : 1),
+						0,
+						pages.length - 1,
+					)),
+				);
+			}
+
+			set((i) => {
+				if (i < index.current - 1 || i > index.current + 1)
+					return { display: 'none' };
+				const x = (i - index.current) * window.innerWidth + (down ? xDelta : 0);
+				return { x, display: 'flex' };
+			});
+		},
+	});
+
 	return (
-		<div className='h-screen w-screen flex items-center justify-center'>
-			<header className='App-header'>
-				<h1 className='text-4xl'>Hello World!</h1>
-			</header>
-		</div>
+		<AppContextProvider>
+			<div className='relative h-screen w-screen overflow-hidden'>
+				{props.map(({ x, display }, i) => (
+					<animated.div
+						{...bind()}
+						key={i}
+						className='absolute h-screen w-screen overflow-hidden'
+						style={{
+							display,
+							transform: x.interpolate((x) => `translate3d(${x}px,0,0)`),
+						}}>
+						{pages[i]}
+					</animated.div>
+				))}
+			</div>
+		</AppContextProvider>
 	);
 }
 
