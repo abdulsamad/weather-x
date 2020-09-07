@@ -2,29 +2,33 @@ import React, { useEffect, useState } from 'react';
 import { useAppContextState } from '../../context/context';
 import { useSpring, animated } from 'react-spring';
 import axios from 'axios';
+import dayjs from 'dayjs';
 import Settings from './Settings';
-/* eslint-disable */
 
 function Home() {
+	/* eslint-disable */
 	const {
-		weather,
-		temp,
-		feels_like,
-		temp_min,
-		temp_max,
-		pressure,
-		humidity,
-		wind,
-		clouds,
-		rain,
-		snow,
-		dt,
-		country,
-		sunrise,
-		sunset,
-		name,
-		timezone,
-	} = useAppContextState().current;
+		current: {
+			weather,
+			temp,
+			feels_like,
+			temp_min,
+			temp_max,
+			pressure,
+			humidity,
+			wind,
+			clouds,
+			rain,
+			snow,
+			dt,
+			country,
+			sunrise,
+			sunset,
+			name,
+			timezone,
+		},
+		timeFormat,
+	} = useAppContextState();
 
 	const [settingsOpen, setSettingsOpen] = useState(false);
 	const [backgroundImageURL, setBackgroundImageURL] = useState('');
@@ -65,7 +69,7 @@ function Home() {
 		slideDownSet();
 		fadeDownSet();
 	}, [weather]);
-
+	/* eslint-enable */
 	return (
 		<>
 			<div className='absolute top-0 right-0 p-5 text-white z-30'>
@@ -89,7 +93,7 @@ function Home() {
 						<h2 className='text-xl font-bold'>{name}</h2>
 						<h2 className='text-6xl'>{temp}&deg;</h2>
 						{weather && <h3 className='text-xl'>{weather[0].main}</h3>}
-						<h4 className='text-lg font-light'>Feels like {feels_like}</h4>
+						<h4 className='text-lg font-light'>Feels like {feels_like}&deg;</h4>
 					</animated.div>
 				</section>
 
@@ -118,11 +122,19 @@ function Home() {
 							)}
 							<tr>
 								<td className='px-2'>Sunrise</td>
-								<td className='px-2'>{sunrise}</td>
+								<td className='px-2'>
+									{timeFormat === 12
+										? dayjs(sunrise * 1000).format('hh:mm A')
+										: dayjs(sunrise * 1000).format('HH:mm')}
+								</td>
 							</tr>
 							<tr>
 								<td className='px-2'>Sunset</td>
-								<td className='px-2'>{sunset}</td>
+								<td className='px-2'>
+									{timeFormat === 12
+										? dayjs(sunset * 1000).format('hh:mm A')
+										: dayjs(sunset * 1000).format('HH:mm')}
+								</td>
 							</tr>
 						</tbody>
 					</table>
