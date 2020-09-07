@@ -8,6 +8,24 @@ export default (state, action) => {
 				current: action.payload,
 			};
 
+		case types.SET_CITY:
+			return {
+				...state,
+				city: action.payload,
+			};
+
+		case types.SET_UNIT:
+			return {
+				...state,
+				unit: action.payload,
+			};
+
+		case types.SET_TIME_FORMAT:
+			return {
+				...state,
+				timeFormat: action.payload,
+			};
+
 		case types.SET_NEXT_48_HOURS:
 			return {
 				...state,
