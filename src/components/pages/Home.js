@@ -61,6 +61,8 @@ function Home() {
 					image_type: 'photo',
 					safesearch: true,
 					editors_choice: true,
+					orientation:
+						window.innerWidth > window.innerHeight ? 'horizontal' : 'vertical',
 					min_height: window.innerWidth > window.innerHeight ? 1080 : 720,
 					max_height: window.innerHeight,
 				},
@@ -77,6 +79,8 @@ function Home() {
 		// Update spring with new props
 		slideDownSet();
 		fadeDownSet();
+
+		// eslint-disable-next-line
 	}, [weather]);
 
 	return (
