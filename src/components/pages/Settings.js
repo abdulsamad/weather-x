@@ -5,14 +5,20 @@ import {
 } from '../../context/context';
 
 function Settings() {
-	const { unit } = useAppContextState();
-	const { setCity, setUnit, setTimeFormat } = useAppContextDispatch();
+	const { unit, timeFormat } = useAppContextState();
+	const {
+		setCity,
+		setUnit,
+		setTimeFormat,
+		setSettingsOpen,
+	} = useAppContextDispatch();
 	const [cityInpVal, setCityInpVal] = useState('');
 
 	const onSubmit = (ev) => {
 		ev.preventDefault();
 		setCity(cityInpVal);
 		setCityInpVal('');
+		setSettingsOpen(false);
 	};
 
 	const changeUnit = (unit) => (ev) => setUnit(unit);
@@ -20,7 +26,7 @@ function Settings() {
 	const changeTimeFormat = (format) => (ev) => setTimeFormat(format);
 
 	return (
-		<>
+		<div className='container mx-auto'>
 			<h1 className='text-lg font-bold mt-5'>Settings</h1>
 			<form onSubmit={onSubmit}>
 				<input
@@ -32,7 +38,9 @@ function Settings() {
 				/>
 			</form>
 			<h6>Or</h6>
-			<button className='inline-flex bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg mt-2 mb-5 shadow'>
+			<button
+				onClick={onSubmit}
+				className='inline-flex bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg mt-2 mb-5 shadow'>
 				<svg
 					xmlns='http://www.w3.org/2000/svg'
 					width='24'
@@ -43,22 +51,34 @@ function Settings() {
 				</svg>{' '}
 				<span>Current Location</span>
 			</button>
-			<div className='mb-5'>
+			<div className='my-5'>
 				<h2 className='text-lg'>Unit</h2>
 				<div className='inline-flex my-2'>
 					<button
 						onClick={changeUnit('metric')}
-						className='bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l-lg'>
+						className={`${
+							unit === 'metric'
+								? 'bg-blue-500 text-white'
+								: 'bg-gray-300 text-gray-800'
+						} hover:bg-gray-400 font-semibold py-2 px-4 rounded-l-lg`}>
 						Metric
 					</button>
 					<button
 						onClick={changeUnit('imperial')}
-						className='bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4'>
+						className={`${
+							unit === 'imperial'
+								? 'bg-blue-500 text-white'
+								: 'bg-gray-300 text-gray-800'
+						} hover:bg-gray-400 font-semibold py-2 px-4`}>
 						Imperial
 					</button>
 					<button
 						onClick={changeUnit(null)}
-						className='bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r-lg'>
+						className={`${
+							unit === null
+								? 'bg-blue-500 text-white'
+								: 'bg-gray-300 text-gray-800'
+						} hover:bg-gray-400 font-semibold py-2 px-4 rounded-r-lg`}>
 						Standard
 					</button>
 				</div>
@@ -68,12 +88,20 @@ function Settings() {
 				<div className='inline-flex my-2'>
 					<button
 						onClick={changeTimeFormat(24)}
-						className='bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l-lg'>
+						className={`${
+							timeFormat === 24
+								? 'bg-blue-500 text-white'
+								: 'bg-gray-300 text-gray-800'
+						} hover:bg-gray-400 font-semibold py-2 px-4 rounded-l-lg`}>
 						24h
 					</button>
 					<button
 						onClick={changeTimeFormat(12)}
-						className='bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r-lg'>
+						className={`${
+							timeFormat === 12
+								? 'bg-blue-500 text-white'
+								: 'bg-gray-300 text-gray-800'
+						} hover:bg-gray-400 font-semibold py-2 px-4 rounded-r-lg`}>
 						12h
 					</button>
 				</div>
@@ -97,7 +125,7 @@ function Settings() {
 					</a>
 				</p>
 			</footer>
-		</>
+		</div>
 	);
 }
 

@@ -14,185 +14,193 @@ function AppContextProvider({ children }) {
 		city: null,
 		unit: 'metric',
 		timeFormat: 24,
+		settingsOpen: false,
 	};
 
 	const [state, dispatch] = useReducer(Reducer, initialState);
 
 	useEffect(() => {
-		try {
-			if (state.city) {
-				axios
-					.get('https://api.openweathermap.org/data/2.5/weather', {
+		state.city
+			? findByCity(state.city, state.unit)
+			: findByCurrentGeoLocation(state.unit);
+	}, [state.city, state.unit]);
+
+	const findByCurrentGeoLocation = (unit) => {
+		navigator.geolocation.getCurrentPosition(
+			({ coords: { latitude, longitude }, timestamp }) => {
+				Promise.all([
+					axios.get('https://api.openweathermap.org/data/2.5/weather', {
 						params: {
 							appid: process.env.REACT_APP_OPEN_WEATHER_API_KEY,
-							q: state.city,
-							units: state.unit,
+							lat: latitude,
+							lon: longitude,
+							units: unit,
 						},
-					})
-					.then(({ data }) => {
-						//Filter with destructuring
-						const {
-							weather,
-							main: {
-								temp,
-								feels_like,
-								temp_min,
-								temp_max,
-								pressure,
-								humidity,
+					}),
+					axios.get('https://api.openweathermap.org/data/2.5/onecall', {
+						params: {
+							appid: process.env.REACT_APP_OPEN_WEATHER_API_KEY,
+							exclude: 'minutely,current',
+							lat: latitude,
+							lon: longitude,
+							units: unit,
+						},
+					}),
+				])
+					.then(
+						([
+							{ data: currentData },
+							{
+								data: { daily, hourly },
 							},
-							wind,
-							clouds,
-							rain,
-							snow,
-							dt,
-							sys: { country, sunrise, sunset },
-							name,
-							timezone,
-						} = data;
-
-						dispatch({
-							type: types.SET_CURRENT,
-							payload: {
+						]) => {
+							//Filter with destructuring
+							const {
 								weather,
-								temp,
-								feels_like,
-								temp_min,
-								temp_max,
-								pressure,
-								humidity,
+								main: {
+									temp,
+									feels_like,
+									temp_min,
+									temp_max,
+									pressure,
+									humidity,
+								},
 								wind,
 								clouds,
 								rain,
 								snow,
 								dt,
-								country,
-								sunrise,
-								sunset,
+								sys: { country, sunrise, sunset },
 								name,
 								timezone,
-							},
-						});
+							} = currentData;
 
-						// Call after getting latitude, longitude (Cityname can't be used in onecall)
-						axios
-							.get('https://api.openweathermap.org/data/2.5/onecall', {
-								params: {
-									appid: process.env.REACT_APP_OPEN_WEATHER_API_KEY,
-									lat: data.coord.lat,
-									lon: data.coord.lon,
-									exclude: 'minutely,current',
-									units: state.unit,
+							dispatch({
+								type: types.SET_CURRENT,
+								payload: {
+									weather,
+									temp,
+									feels_like,
+									temp_min,
+									temp_max,
+									pressure,
+									humidity,
+									wind,
+									clouds,
+									rain,
+									snow,
+									dt,
+									country,
+									sunrise,
+									sunset,
+									name,
+									timezone,
 								},
-							})
-							.then(({ data: { daily, hourly } }) => {
-								dispatch({
-									type: types.SET_NEXT_48_HOURS,
-									payload: hourly,
-								});
-								dispatch({
-									type: types.SET_NEXT_7_DAYS,
-									payload: daily,
-								});
 							});
+
+							dispatch({
+								type: types.SET_NEXT_48_HOURS,
+								payload: hourly,
+							});
+
+							dispatch({
+								type: types.SET_NEXT_7_DAYS,
+								payload: daily,
+							});
+						},
+					)
+					.catch((err) => {
+						throw err;
+					});
+			},
+			(err) => {
+				throw err;
+			},
+		);
+	};
+
+	const findByCity = (city, unit) => {
+		axios
+			.get('https://api.openweathermap.org/data/2.5/weather', {
+				params: {
+					appid: process.env.REACT_APP_OPEN_WEATHER_API_KEY,
+					q: city,
+					units: unit,
+				},
+			})
+			.then(({ data }) => {
+				//Filter with destructuring
+				const {
+					weather,
+					main: { temp, feels_like, temp_min, temp_max, pressure, humidity },
+					wind,
+					clouds,
+					rain,
+					snow,
+					dt,
+					sys: { country, sunrise, sunset },
+					name,
+					timezone,
+				} = data;
+
+				dispatch({
+					type: types.SET_CURRENT,
+					payload: {
+						weather,
+						temp,
+						feels_like,
+						temp_min,
+						temp_max,
+						pressure,
+						humidity,
+						wind,
+						clouds,
+						rain,
+						snow,
+						dt,
+						country,
+						sunrise,
+						sunset,
+						name,
+						timezone,
+					},
+				});
+
+				// Call after getting latitude, longitude (Cityname can't be used in onecall)
+				axios
+					.get('https://api.openweathermap.org/data/2.5/onecall', {
+						params: {
+							appid: process.env.REACT_APP_OPEN_WEATHER_API_KEY,
+							lat: data.coord.lat,
+							lon: data.coord.lon,
+							exclude: 'minutely,current',
+							units: unit,
+						},
+					})
+					.then(({ data: { daily, hourly } }) => {
+						dispatch({
+							type: types.SET_NEXT_48_HOURS,
+							payload: hourly,
+						});
+						dispatch({
+							type: types.SET_NEXT_7_DAYS,
+							payload: daily,
+						});
 					})
 					.catch((err) => {
 						throw err;
 					});
-			} else {
-				navigator.geolocation.getCurrentPosition(
-					({ coords: { latitude, longitude }, timestamp }) => {
-						Promise.all([
-							axios.get('https://api.openweathermap.org/data/2.5/weather', {
-								params: {
-									appid: process.env.REACT_APP_OPEN_WEATHER_API_KEY,
-									lat: latitude,
-									lon: longitude,
-									units: state.unit,
-								},
-							}),
-							axios.get('https://api.openweathermap.org/data/2.5/onecall', {
-								params: {
-									appid: process.env.REACT_APP_OPEN_WEATHER_API_KEY,
-									exclude: 'minutely,current',
-									lat: latitude,
-									lon: longitude,
-									units: state.unit,
-								},
-							}),
-						])
-							.then(
-								([
-									{ data: currentData },
-									{
-										data: { daily, hourly },
-									},
-								]) => {
-									//Filter with destructuring
-									const {
-										weather,
-										main: {
-											temp,
-											feels_like,
-											temp_min,
-											temp_max,
-											pressure,
-											humidity,
-										},
-										wind,
-										clouds,
-										rain,
-										snow,
-										dt,
-										sys: { country, sunrise, sunset },
-										name,
-										timezone,
-									} = currentData;
+			})
+			.catch((err) => {
+				throw err;
+			});
+	};
 
-									dispatch({
-										type: types.SET_CURRENT,
-										payload: {
-											weather,
-											temp,
-											feels_like,
-											temp_min,
-											temp_max,
-											pressure,
-											humidity,
-											wind,
-											clouds,
-											rain,
-											snow,
-											dt,
-											country,
-											sunrise,
-											sunset,
-											name,
-											timezone,
-										},
-									});
-
-									dispatch({
-										type: types.SET_NEXT_48_HOURS,
-										payload: hourly,
-									});
-
-									dispatch({
-										type: types.SET_NEXT_7_DAYS,
-										payload: daily,
-									});
-								},
-							)
-							.catch((err) => {
-								throw err;
-							});
-					},
-				);
-			}
-		} catch (err) {
-			console.log(err);
-		}
-	}, [state.city, state.unit]);
+	const setSettingsOpen = (bool) =>
+		dispatch({
+			type: types.SET_SETTINGS_OPEN,
+			payload: bool,
+		});
 
 	const setCity = (city) =>
 		dispatch({
@@ -221,12 +229,14 @@ function AppContextProvider({ children }) {
 				unit: state.unit,
 				city: state.city,
 				timeFormat: state.timeFormat,
+				settingsOpen: state.settingsOpen,
 			}}>
 			<AppContextDispatch.Provider
 				value={{
 					setCity,
 					setUnit,
 					setTimeFormat,
+					setSettingsOpen,
 				}}>
 				{children}
 			</AppContextDispatch.Provider>

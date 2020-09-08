@@ -1,37 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import { useAppContextState } from '../../context/context';
+import {
+	useAppContextState,
+	useAppContextDispatch,
+} from '../../context/context';
 import { useSpring, animated } from 'react-spring';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import Settings from './Settings';
 
 function Home() {
-	/* eslint-disable */
 	const {
 		current: {
 			weather,
 			temp,
 			feels_like,
-			temp_min,
-			temp_max,
+			// temp_min,
+			// temp_max,
 			pressure,
 			humidity,
 			wind,
-			clouds,
-			rain,
-			snow,
-			dt,
-			country,
+			// clouds,
+			// rain,
+			// snow,
+			// dt,
+			// country,
 			sunrise,
 			sunset,
 			name,
-			timezone,
+			// timezone,
 		},
 		timeFormat,
+		unit,
+		settingsOpen,
 	} = useAppContextState();
-
-	const [settingsOpen, setSettingsOpen] = useState(false);
-	const [backgroundImageURL, setBackgroundImageURL] = useState('');
+	const { setSettingsOpen } = useAppContextDispatch();
+	const [backgroundImageURL, setBackgroundImageURL] = useState(null);
 	const [slideDown, slideDownSet] = useSpring(() => ({
 		from: { opacity: 0, transform: 'translate3d(0, -20%, 0)' },
 		to: { opacity: 1, transform: 'translate3d(0, 0, 0)' },
@@ -57,27 +60,34 @@ function Home() {
 					q: weather[0].main,
 					image_type: 'photo',
 					safesearch: true,
-					min_height: window.innerHeight,
+					editors_choice: true,
+					min_height: window.innerWidth > window.innerHeight ? 1080 : 720,
+					max_height: window.innerHeight,
 				},
 			})
-			.then(({ data }) => {
+			.then(({ data: { hits } }) => {
 				const randomNum = Math.floor(Math.random() * 19) + 1;
-				setBackgroundImageURL(data.hits[randomNum].webformatURL);
-			});
+
+				'webformatURL' in hits[randomNum]
+					? setBackgroundImageURL(hits[randomNum].webformatURL)
+					: setBackgroundImageURL(null);
+			})
+			.catch(() => setBackgroundImageURL(null));
 
 		// Update spring with new props
 		slideDownSet();
 		fadeDownSet();
 	}, [weather]);
-	/* eslint-enable */
+
 	return (
 		<>
-			<div className='absolute top-0 right-0 p-5 text-white z-30'>
+			<div
+				onClick={() => setSettingsOpen(!settingsOpen)}
+				className='absolute top-0 right-0 p-5 text-white z-30'>
 				<i
-					className={`my-5 transition-all duration-300 ${
+					className={`my-5 transition-all duration-300 fa-lg ${
 						settingsOpen ? 'fas fa-times' : 'fas fa-bars'
-					}`}
-					onClick={() => setSettingsOpen((prevState) => !prevState)}></i>
+					}`}></i>
 			</div>
 
 			{/* Home */}
@@ -88,14 +98,12 @@ function Home() {
 						: 'linear-gradient(to top, #3a1c71, #d76d77, #ffaf7b)',
 				}}
 				className='home h-screen w-screen flex flex-col justify-between p-5 text-white'>
-				<section className='mt-5 mb-3 z-10'>
-					<animated.div style={slideDown}>
-						<h2 className='text-xl font-bold'>{name}</h2>
-						<h2 className='text-6xl'>{temp}&deg;</h2>
-						{weather && <h3 className='text-xl'>{weather[0].main}</h3>}
-						<h4 className='text-lg font-light'>Feels like {feels_like}&deg;</h4>
-					</animated.div>
-				</section>
+				<animated.section style={slideDown} className='mt-5 mb-3 z-10'>
+					<h2 className='text-xl font-bold'>{name}</h2>
+					<h2 className='text-6xl'>{temp}&deg;</h2>
+					{weather && <h3 className='text-xl'>{weather[0].main}</h3>}
+					<h4 className='text-lg font-light'>Feels like {feels_like}&deg;</h4>
+				</animated.section>
 
 				<animated.section style={fadeDown} className='mb-5 z-10'>
 					<table className='table'>
@@ -112,7 +120,11 @@ function Home() {
 								<>
 									<tr>
 										<td className='px-2'>Wind Speed</td>
-										<td className='px-2'>{wind.speed} m/s</td>
+										<td className='px-2'>
+											{unit === 'imperial'
+												? wind.speed + ' mi/hr'
+												: wind.speed + ' m/s'}
+										</td>
 									</tr>
 									<tr>
 										<td className='px-2'>Wind Direction</td>

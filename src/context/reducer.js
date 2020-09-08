@@ -20,6 +20,12 @@ export default (state, action) => {
 				unit: action.payload,
 			};
 
+		case types.SET_SETTINGS_OPEN:
+			return {
+				...state,
+				settingsOpen: action.payload,
+			};
+
 		case types.SET_TIME_FORMAT:
 			return {
 				...state,
