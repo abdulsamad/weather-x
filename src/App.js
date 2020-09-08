@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { AppContextProvider } from './context/context';
 import { useSprings, animated } from 'react-spring';
 import { useGesture } from 'react-use-gesture';
-import Home from './components/layout/Home';
+import Home from './components/pages/Home';
 
 const pages = [<Home />];
 
