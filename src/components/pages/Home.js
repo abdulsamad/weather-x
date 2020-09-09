@@ -10,12 +10,15 @@ import Settings from './Settings';
 
 function Home() {
 	const {
+		timeFormat,
+		unit,
+		settingsOpen,
 		current: {
 			weather,
 			temp,
 			feels_like,
-			// temp_min,
-			// temp_max,
+			temp_min,
+			temp_max,
 			pressure,
 			humidity,
 			wind,
@@ -29,9 +32,6 @@ function Home() {
 			name,
 			// timezone,
 		},
-		timeFormat,
-		unit,
-		settingsOpen,
 	} = useAppContextState();
 	const { setSettingsOpen } = useAppContextDispatch();
 	const [backgroundImageURL, setBackgroundImageURL] = useState(null);
@@ -79,9 +79,7 @@ function Home() {
 		// Update spring with new props
 		slideDownSet();
 		fadeDownSet();
-
-		// eslint-disable-next-line
-	}, [weather]);
+	}, [weather, slideDownSet, fadeDownSet]);
 
 	return (
 		<>
@@ -105,6 +103,9 @@ function Home() {
 				<animated.section style={slideDown} className='mt-5 mb-3 z-10'>
 					<h2 className='text-xl font-bold'>{name}</h2>
 					<h2 className='text-6xl'>{temp}&deg;</h2>
+					<h3 className='text-sm'>
+						Min:{temp_min}&deg; Max:{temp_max}&deg;
+					</h3>
 					{weather && <h3 className='text-xl'>{weather[0].main}</h3>}
 					<h4 className='text-lg font-light'>Feels like {feels_like}&deg;</h4>
 				</animated.section>
