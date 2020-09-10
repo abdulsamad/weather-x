@@ -5,3 +5,5 @@ export const SET_CITY = 'SET_CITY';
 export const SET_TIME_FORMAT = 'SET_TIME_FORMAT';
 export const SET_UNIT = 'SET_UNIT';
 export const SET_SETTINGS_OPEN = 'SET_SETTINGS_OPEN';
+export const SET_ALERT = 'SET_ALERT';
+export const REMOVE_ALERT = 'REMOVE_ALERT';

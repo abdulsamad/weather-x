@@ -15,6 +15,7 @@ function AppContextProvider({ children }) {
 		unit: 'metric',
 		timeFormat: 24,
 		settingsOpen: false,
+		alert: null,
 	};
 
 	const [state, dispatch] = useReducer(Reducer, initialState);
@@ -23,6 +24,8 @@ function AppContextProvider({ children }) {
 		state.city
 			? findByCity(state.city, state.unit)
 			: findByCurrentGeoLocation(state.unit);
+
+		// eslint-disable-next-line
 	}, [state.city, state.unit]);
 
 	const findByCurrentGeoLocation = (unit) => {
@@ -114,7 +117,10 @@ function AppContextProvider({ children }) {
 					});
 			},
 			(err) => {
-				throw err;
+				setAlert({
+					type: 'error',
+					message: err,
+				});
 			},
 		);
 	};
@@ -192,7 +198,10 @@ function AppContextProvider({ children }) {
 					});
 			})
 			.catch((err) => {
-				throw err;
+				setAlert({
+					type: 'error',
+					message: 'Please enter a valid city.',
+				});
 			});
 	};
 
@@ -220,6 +229,20 @@ function AppContextProvider({ children }) {
 			payload: unit,
 		});
 
+	const setAlert = ({ type, message }) => {
+		dispatch({
+			type: types.SET_ALERT,
+			payload: { type, message },
+		});
+
+		setTimeout(removeAlert, 3000);
+	};
+
+	const removeAlert = () =>
+		dispatch({
+			type: types.REMOVE_ALERT,
+		});
+
 	return (
 		<AppContext.Provider
 			value={{
@@ -230,6 +253,7 @@ function AppContextProvider({ children }) {
 				city: state.city,
 				timeFormat: state.timeFormat,
 				settingsOpen: state.settingsOpen,
+				alert: state.alert,
 			}}>
 			<AppContextDispatch.Provider
 				value={{
@@ -237,6 +261,8 @@ function AppContextProvider({ children }) {
 					setUnit,
 					setTimeFormat,
 					setSettingsOpen,
+					setAlert,
+					removeAlert,
 				}}>
 				{children}
 			</AppContextDispatch.Provider>

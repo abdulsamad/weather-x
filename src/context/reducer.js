@@ -44,6 +44,18 @@ export default (state, action) => {
 				next7Days: action.payload,
 			};
 
+		case types.SET_ALERT:
+			return {
+				...state,
+				alert: action.payload,
+			};
+
+		case types.REMOVE_ALERT:
+			return {
+				...state,
+				alert: null,
+			};
+
 		default:
 			return state;
 	}

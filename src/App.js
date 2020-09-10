@@ -3,6 +3,7 @@ import { AppContextProvider } from './context/context';
 import { useSprings, animated } from 'react-spring';
 import { useGesture } from 'react-use-gesture';
 import Home from './components/pages/Home';
+import Alert from './components/layout/Alert';
 
 const pages = [<Home />];
 
@@ -50,12 +51,13 @@ function App() {
 
 	return (
 		<AppContextProvider>
+			<Alert />
 			<div className='relative h-screen w-screen overflow-hidden'>
 				{props.map(({ x, display }, i) => (
 					<animated.div
 						{...bind()}
 						key={i}
-						className='absolute h-screen w-screen overflow-hidden'
+						className='absolute h-full w-full overflow-hidden'
 						style={{
 							display,
 							transform: x.interpolate((x) => `translate3d(${x}px,0,0)`),
