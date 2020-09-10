@@ -58,28 +58,31 @@ function Settings() {
 						onClick={changeUnit('metric')}
 						className={`${
 							unit === 'metric'
-								? 'bg-blue-500 text-white'
+								? 'bg-blue-500 hover:bg-blue-700 text-white'
 								: 'bg-gray-300 text-gray-800'
-						} hover:bg-gray-400 font-semibold py-2 px-4 rounded-l-lg`}>
-						Metric
+						} hover:bg-blue-400 hover:text-white font-semibold py-2 px-4 rounded-l-lg`}>
+						<div>Metric</div>
+						<small>&deg;C, m/s</small>
 					</button>
 					<button
 						onClick={changeUnit('imperial')}
 						className={`${
 							unit === 'imperial'
-								? 'bg-blue-500 text-white'
+								? 'bg-blue-500 hover:bg-blue-700 text-white'
 								: 'bg-gray-300 text-gray-800'
-						} hover:bg-gray-400 font-semibold py-2 px-4`}>
-						Imperial
+						} hover:bg-blue-400 hover:text-white font-semibold py-2 px-4 border-solid border-l-2 border-r-2 border-gray-400`}>
+						<div>Imperial</div>
+						<small>&deg;F, mi/hr</small>
 					</button>
 					<button
 						onClick={changeUnit(null)}
 						className={`${
 							unit === null
-								? 'bg-blue-500 text-white'
+								? 'bg-blue-500 hover:bg-blue-700 text-white'
 								: 'bg-gray-300 text-gray-800'
-						} hover:bg-gray-400 font-semibold py-2 px-4 rounded-r-lg`}>
-						Standard
+						} hover:bg-blue-400 hover:text-white font-semibold py-2 px-4 rounded-r-lg`}>
+						<div>Standard</div>
+						<small>&deg;K, m/s</small>
 					</button>
 				</div>
 			</div>
@@ -90,19 +93,19 @@ function Settings() {
 						onClick={changeTimeFormat(24)}
 						className={`${
 							timeFormat === 24
-								? 'bg-blue-500 text-white'
+								? 'bg-blue-500 hover:bg-blue-700 text-white'
 								: 'bg-gray-300 text-gray-800'
-						} hover:bg-gray-400 font-semibold py-2 px-4 rounded-l-lg`}>
-						24h
+						} hover:bg-blue-400 hover:text-white font-semibold py-2 px-4 rounded-l-lg`}>
+						<span>24h</span>
 					</button>
 					<button
 						onClick={changeTimeFormat(12)}
 						className={`${
 							timeFormat === 12
-								? 'bg-blue-500 text-white'
+								? 'bg-blue-500 hover:bg-blue-700 text-white'
 								: 'bg-gray-300 text-gray-800'
-						} hover:bg-gray-400 font-semibold py-2 px-4 rounded-r-lg`}>
-						12h
+						} hover:bg-blue-400 hover:text-white font-semibold py-2 px-4 rounded-r-lg`}>
+						<span>12h</span>
 					</button>
 				</div>
 			</div>
