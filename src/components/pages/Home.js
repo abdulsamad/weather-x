@@ -103,14 +103,16 @@ function Home() {
 
 			{/* Home */}
 			<div
-				className='home h-screen w-screen flex flex-col justify-between p-5 text-white'
+				className={`h-screen w-screen flex flex-col justify-between p-5 text-white ${
+					backgroundImageURL ? 'home' : ''
+				}`}
 				style={{
 					background: backgroundImageURL
 						? `url(${backgroundImageURL}) center / cover no-repeat`
-						: 'linear-gradient(to top, #3a1c71, #d76d77, #ffaf7b)',
+						: 'linear-gradient(to top, #FC466B, #3F5EFB)',
 				}}>
 				<animated.section style={slideDown} className='mt-5 mb-3 z-10'>
-					<h2 className='text-xl font-bold'>{place}</h2>
+					<h2 className='text-xl capitalize font-bold'>{place}</h2>
 					<h2 className='text-6xl'>{temp}&deg;</h2>
 					{weather && <h3 className='text-xl'>{weather[0].main}</h3>}
 					<h4 className='text-lg font-light'>Feels like {feels_like}&deg;</h4>
