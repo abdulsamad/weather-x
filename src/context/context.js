@@ -30,57 +30,48 @@ function AppContextProvider({ children }) {
 
 	const findByGeoLocation = (unit) => {
 		navigator.geolocation.getCurrentPosition(
-			({ coords: { latitude, longitude }, timestamp }) => {
-				axios
-					.get('https://api.openweathermap.org/data/2.5/onecall', {
+			async ({ coords: { latitude: lat, longitude: lon }, timestamp }) => {
+				// OpenWeather API (OneCall)
+				const onecall = await axios.get(
+					'https://api.openweathermap.org/data/2.5/onecall',
+					{
 						params: {
 							appid: process.env.REACT_APP_OPEN_WEATHER_API_KEY,
 							exclude: 'minutely',
-							lat: latitude,
-							lon: longitude,
+							lat,
+							lon,
 							units: unit,
 						},
-					})
-					.then(({ data: { current, daily, hourly } }) => {
-						dispatch({
-							type: types.SET_CURRENT,
-							payload: current,
-						});
+					},
+				);
 
-						dispatch({
-							type: types.SET_NEXT_48_HOURS,
-							payload: hourly,
-						});
+				const { current, daily, hourly } = await onecall.data;
 
-						dispatch({
-							type: types.SET_NEXT_7_DAYS,
-							payload: daily,
-						});
+				dispatch({
+					type: types.SET_CURRENT,
+					payload: current,
+				});
 
-						// Reverse GeoCoding for place
-						axios
-							.get('https://nominatim.openstreetmap.org/reverse', {
-								params: {
-									lat: latitude,
-									lon: longitude,
-									format: 'json',
-								},
-							})
-							.then(
-								({
-									data: {
-										address: { city, state_district, state, country },
-									},
-								}) =>
-									dispatch({
-										type: types.SET_PLACE,
-										payload: city || state_district || state || country,
-									}),
-							);
-					})
-					.catch((err) => {
-						throw err;
-					});
+				dispatch({
+					type: types.SET_NEXT_48_HOURS,
+					payload: hourly,
+				});
+
+				dispatch({
+					type: types.SET_NEXT_7_DAYS,
+					payload: daily,
+				});
+
+				// Reverse geocoding the return lat and lon
+				const { city, state_district, state, country } = await reverseGeocode(
+					lat,
+					lon,
+				);
+
+				dispatch({
+					type: types.SET_PLACE,
+					payload: city || state_district || state || country,
+				});
 			},
 			(err) => {
 				setAlert({
@@ -91,52 +82,72 @@ function AppContextProvider({ children }) {
 		);
 	};
 
-	const findByName = (city, unit) => {
-		axios
-			.get('https://nominatim.openstreetmap.org/search', {
+	const findByName = async (place, unit) => {
+		// Geocode the entered place
+		const geocodesArr = await geocode(place);
+		const { lat, lon } = geocodesArr[0];
+
+		// OpenWeather API (OneCall)
+		const onecall = await axios.get(
+			'https://api.openweathermap.org/data/2.5/onecall',
+			{
 				params: {
-					q: city,
+					appid: process.env.REACT_APP_OPEN_WEATHER_API_KEY,
+					lat: lat,
+					lon: lon,
+					exclude: 'minutely',
+					units: unit,
+				},
+			},
+		);
+
+		const { current, daily, hourly } = onecall.data;
+
+		dispatch({
+			type: types.SET_CURRENT,
+			payload: current,
+		});
+
+		dispatch({
+			type: types.SET_NEXT_48_HOURS,
+			payload: hourly,
+		});
+
+		dispatch({
+			type: types.SET_NEXT_7_DAYS,
+			payload: daily,
+		});
+
+		dispatch({
+			type: types.SET_PLACE,
+			payload: place,
+		});
+	};
+
+	const geocode = async (place) => {
+		const call = await axios.get('https://nominatim.openstreetmap.org/search', {
+			params: {
+				q: place,
+				format: 'json',
+			},
+		});
+
+		return await call.data;
+	};
+
+	const reverseGeocode = async (lat, lon) => {
+		const call = await axios.get(
+			'https://nominatim.openstreetmap.org/reverse',
+			{
+				params: {
+					lat,
+					lon,
 					format: 'json',
 				},
-			})
-			.then(({ data }) => {
-				const { lat, lon } = data[0];
+			},
+		);
 
-				axios
-					.get('https://api.openweathermap.org/data/2.5/onecall', {
-						params: {
-							appid: process.env.REACT_APP_OPEN_WEATHER_API_KEY,
-							lat: lat,
-							lon: lon,
-							exclude: 'minutely',
-							units: unit,
-						},
-					})
-					.then(({ data: { current, daily, hourly } }) => {
-						dispatch({
-							type: types.SET_CURRENT,
-							payload: current,
-						});
-
-						dispatch({
-							type: types.SET_NEXT_48_HOURS,
-							payload: hourly,
-						});
-
-						dispatch({
-							type: types.SET_NEXT_7_DAYS,
-							payload: daily,
-						});
-
-						dispatch({
-							type: types.SET_PLACE,
-							payload: city,
-						});
-					})
-					.catch((err) => {
-						throw err;
-					});
-			});
+		return await call.data.address;
 	};
 
 	const setSettingsOpen = (bool) =>
