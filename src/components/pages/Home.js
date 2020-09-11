@@ -10,27 +10,25 @@ import Settings from './Settings';
 
 function Home() {
 	const {
+		place,
 		timeFormat,
 		unit,
 		settingsOpen,
 		current: {
-			weather,
-			temp,
 			feels_like,
-			temp_min,
-			temp_max,
-			pressure,
 			humidity,
-			wind,
-			// clouds,
-			// rain,
-			// snow,
-			// dt,
-			// country,
+			pressure,
 			sunrise,
 			sunset,
-			name,
-			// timezone,
+			temp,
+			weather,
+			wind_deg,
+			wind_speed,
+			// dt,
+			// clouds,
+			// dew_point,
+			// uvi,
+			// visibility,
 		},
 	} = useAppContextState();
 	const { setSettingsOpen } = useAppContextDispatch();
@@ -112,11 +110,8 @@ function Home() {
 						: 'linear-gradient(to top, #3a1c71, #d76d77, #ffaf7b)',
 				}}>
 				<animated.section style={slideDown} className='mt-5 mb-3 z-10'>
-					<h2 className='text-xl font-bold'>{name}</h2>
+					<h2 className='text-xl font-bold'>{place}</h2>
 					<h2 className='text-6xl'>{temp}&deg;</h2>
-					<h3 className='text-sm'>
-						Min:{temp_min}&deg; Max:{temp_max}&deg;
-					</h3>
 					{weather && <h3 className='text-xl'>{weather[0].main}</h3>}
 					<h4 className='text-lg font-light'>Feels like {feels_like}&deg;</h4>
 				</animated.section>
@@ -132,22 +127,18 @@ function Home() {
 								<td className='px-2'>Pressure</td>
 								<td className='px-2'>{pressure} mbar</td>
 							</tr>
-							{wind && (
-								<>
-									<tr>
-										<td className='px-2'>Wind Speed</td>
-										<td className='px-2'>
-											{unit === 'imperial'
-												? wind.speed + ' mi/hr'
-												: wind.speed + ' m/s'}
-										</td>
-									</tr>
-									<tr>
-										<td className='px-2'>Wind Direction</td>
-										<td className='px-2'>{wind.deg}&deg;</td>
-									</tr>
-								</>
-							)}
+							<tr>
+								<td className='px-2'>Wind Speed</td>
+								<td className='px-2'>
+									{unit === 'imperial'
+										? wind_speed + ' mi/hr'
+										: wind_speed + ' m/s'}
+								</td>
+							</tr>
+							<tr>
+								<td className='px-2'>Wind Direction</td>
+								<td className='px-2'>{wind_deg}&deg;</td>
+							</tr>
 							<tr>
 								<td className='px-2'>Sunrise</td>
 								<td className='px-2'>

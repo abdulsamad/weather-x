@@ -7,16 +7,17 @@ import {
 function Settings() {
 	const { unit, timeFormat } = useAppContextState();
 	const {
-		setCity,
 		setUnit,
 		setTimeFormat,
 		setSettingsOpen,
+		findByName,
+		findByGeoLocation,
 	} = useAppContextDispatch();
 	const [cityInpVal, setCityInpVal] = useState('');
 
 	const onSubmit = (ev) => {
 		ev.preventDefault();
-		setCity(cityInpVal);
+		findByName(cityInpVal, unit);
 		setCityInpVal('');
 		setSettingsOpen(false);
 	};
@@ -39,7 +40,7 @@ function Settings() {
 			</form>
 			<h6>Or</h6>
 			<button
-				onClick={onSubmit}
+				onClick={() => findByGeoLocation(unit)}
 				className='inline-flex bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg mt-2 mb-5 shadow'>
 				<svg
 					xmlns='http://www.w3.org/2000/svg'

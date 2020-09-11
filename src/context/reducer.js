@@ -8,10 +8,10 @@ export default (state, action) => {
 				current: action.payload,
 			};
 
-		case types.SET_CITY:
+		case types.SET_PLACE:
 			return {
 				...state,
-				city: action.payload,
+				place: action.payload,
 			};
 
 		case types.SET_UNIT:
