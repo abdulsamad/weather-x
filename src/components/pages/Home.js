@@ -85,7 +85,7 @@ function Home() {
 				onClick={() => setSettingsOpen(!settingsOpen)}
 				className='absolute top-0 right-0 p-5 text-white z-30'>
 				<svg
-					className='w-6 h-6'
+					className='w-6 h-6 mt-5'
 					fill='currentColor'
 					viewBox='0 0 20 20'
 					xmlns='http://www.w3.org/2000/svg'>
