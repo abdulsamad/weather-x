@@ -60,7 +60,6 @@ function Home() {
 					q: weather[0].main,
 					image_type: 'photo',
 					safesearch: true,
-					editors_choice: true,
 					orientation:
 						window.innerWidth > window.innerHeight ? 'horizontal' : 'vertical',
 					min_height: window.innerWidth > window.innerHeight ? 1080 : 720,
@@ -70,11 +69,13 @@ function Home() {
 			.then(({ data: { hits } }) => {
 				const randomNum = Math.floor(Math.random() * 19) + 1;
 
-				'webformatURL' in hits[randomNum]
+				hits[randomNum]
 					? setBackgroundImageURL(hits[randomNum].webformatURL)
 					: setBackgroundImageURL(null);
 			})
-			.catch(() => setBackgroundImageURL(null));
+			.catch((err) => {
+				setBackgroundImageURL(null);
+			});
 
 		// Update spring with new props
 		slideDownSet();
