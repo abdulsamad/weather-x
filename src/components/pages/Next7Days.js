@@ -40,7 +40,7 @@ function Next7Days() {
 								<span className='capitalize'>{weather[0].description}</span>
 								<img
 									src={icons['_' + weather[0].icon]}
-									className='h-6 transform scale-150'
+									className='w-8 h-8 transform scale-150'
 									alt='weather icon'
 								/>
 								<span className='font-semibold'>
