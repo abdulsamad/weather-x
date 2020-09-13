@@ -64,7 +64,7 @@ function Next48Hours() {
 											<span className=''>{temp}&deg;</span>
 											<img
 												src={icons['_' + weather[0].icon]}
-												className='h-8'
+												className='h-8 transform scale-150'
 												alt='weather icon'
 											/>
 										</div>
