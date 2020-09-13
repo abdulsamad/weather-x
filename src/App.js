@@ -27,16 +27,15 @@ function App() {
 	const bind = useGesture({
 		onDrag: ({
 			down,
-			delta: [xDelta, yDelta],
-			direction: [xDir],
+			delta: [xDelta],
+			direction: [xDir, yDir],
 			distance,
 			cancel,
 		}) => {
 			if (
-				yDelta > -10 &&
-				yDelta < 10 &&
 				down &&
-				distance > window.innerWidth / 5
+				distance > window.innerWidth / 6 &&
+				(parseInt(xDir) === 1 || parseInt(xDir) === -1)
 			) {
 				cancel(
 					(index.current = clamp(
