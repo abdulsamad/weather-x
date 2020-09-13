@@ -36,7 +36,7 @@ function App() {
 				yDelta > -10 &&
 				yDelta < 10 &&
 				down &&
-				distance > window.innerWidth / 2
+				distance > window.innerWidth / 5
 			) {
 				cancel(
 					(index.current = clamp(
