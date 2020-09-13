@@ -27,12 +27,17 @@ function App() {
 	const bind = useGesture({
 		onDrag: ({
 			down,
-			delta: [xDelta],
+			delta: [xDelta, yDelta],
 			direction: [xDir],
 			distance,
 			cancel,
 		}) => {
-			if (down && distance > window.innerWidth / 2) {
+			if (
+				yDelta > -10 &&
+				yDelta < 10 &&
+				down &&
+				distance > window.innerWidth / 2
+			) {
 				cancel(
 					(index.current = clamp(
 						index.current + (xDir > 0 ? -1 : 1),
