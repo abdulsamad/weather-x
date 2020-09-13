@@ -30,6 +30,8 @@ function Home() {
 			dew_point,
 			uvi,
 			visibility,
+			rain,
+			snow,
 		},
 	} = useAppContextState();
 	const { setSettingsOpen } = useAppContextDispatch();
@@ -172,6 +174,18 @@ function Home() {
 										<td className='px-2'>Wind Direction</td>
 										<td className='px-2'>{wind_deg}&deg;</td>
 									</tr>
+									{rain && (
+										<tr>
+											<td className='px-2'>Rain (1h)</td>
+											<td className='px-2'>{rain['1h']} mm</td>
+										</tr>
+									)}
+									{snow && (
+										<tr>
+											<td className='px-2'>Snow (1h)</td>
+											<td className='px-2'>{snow['1h']} mm</td>
+										</tr>
+									)}
 									<tr>
 										<td className='px-2'>Sunrise</td>
 										<td className='px-2'>
