@@ -5,8 +5,9 @@ import { useGesture } from 'react-use-gesture';
 import Home from './components/pages/Home';
 import Alert from './components/layout/Alert';
 import Next48Hours from './components/pages/Next48Hours';
+import Next7Days from './components/pages/Next7Days';
 
-const pages = [<Home />, <Next48Hours />];
+const pages = [<Home />, <Next48Hours />, <Next7Days />];
 
 function App() {
 	const index = useRef(0);
