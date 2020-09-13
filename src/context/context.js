@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import React, {
+	createContext,
+	useContext,
+	useReducer,
+	useEffect,
+	useRef,
+} from 'react';
 import Reducer from './reducer';
 import * as types from './types';
 import axios from 'axios';
@@ -19,7 +25,28 @@ function AppContextProvider({ children }) {
 	};
 
 	const [state, dispatch] = useReducer(Reducer, initialState);
+	const settingsStr = useRef(localStorage.getItem('settings'));
 
+	// Loading default settings
+	useEffect(() => {
+		if (settingsStr.current) {
+			const parsedSettings = JSON.parse(settingsStr.current);
+
+			parsedSettings.unit &&
+				dispatch({
+					type: types.SET_UNIT,
+					payload: parsedSettings.unit,
+				});
+
+			parsedSettings.timeFormat &&
+				dispatch({
+					type: types.SET_TIME_FORMAT,
+					payload: parsedSettings.timeFormat,
+				});
+		}
+	}, [settingsStr]);
+
+	// Fetching data
 	useEffect(() => {
 		state.place
 			? findByName(state.place, state.unit)
@@ -162,17 +189,42 @@ function AppContextProvider({ children }) {
 			payload: place,
 		});
 
-	const setTimeFormat = (format) =>
+	const setTimeFormat = (timeFormat) => {
+		if (settingsStr.current) {
+			localStorage.setItem(
+				'settings',
+				JSON.stringify({
+					...JSON.parse(settingsStr.current),
+					timeFormat,
+				}),
+			);
+		} else {
+			localStorage.setItem('settings', JSON.stringify({ timeFormat }));
+		}
+
 		dispatch({
 			type: types.SET_TIME_FORMAT,
-			payload: format,
+			payload: timeFormat,
 		});
+	};
 
-	const setUnit = (unit) =>
+	const setUnit = (unit) => {
+		if (settingsStr.current) {
+			localStorage.setItem(
+				'settings',
+				JSON.stringify({ ...JSON.parse(settingsStr.current), unit }),
+			);
+		} else {
+			localStorage.setItem('settings', JSON.stringify({ unit }));
+		}
+
+		console.log(unit);
+
 		dispatch({
 			type: types.SET_UNIT,
 			payload: unit,
 		});
+	};
 
 	const setAlert = ({ type, message }) => {
 		dispatch({
