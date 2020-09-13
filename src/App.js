@@ -4,8 +4,9 @@ import { useSprings, animated } from 'react-spring';
 import { useGesture } from 'react-use-gesture';
 import Home from './components/pages/Home';
 import Alert from './components/layout/Alert';
+import Next48Hours from './components/pages/Next48Hours';
 
-const pages = [<Home />];
+const pages = [<Home />, <Next48Hours />];
 
 function App() {
 	const index = useRef(0);
