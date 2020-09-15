@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { AppContextProvider } from './context/context';
 import { useSprings, animated } from 'react-spring';
-import { useGesture } from 'react-use-gesture';
+import { useDrag } from 'react-use-gesture';
 import Home from './components/pages/Home';
 import Alert from './components/layout/Alert';
 import Next48Hours from './components/pages/Next48Hours';
@@ -24,18 +24,12 @@ function App() {
 		display: 'block',
 	}));
 
-	const bind = useGesture({
-		onDrag: ({
-			down,
-			delta: [xDelta],
-			direction: [xDir, yDir],
-			distance,
-			cancel,
-		}) => {
+	const bind = useDrag(
+		({ down, delta: [xDelta], direction: [xDir], distance, cancel }) => {
 			if (
+				(parseInt(xDir) === 1 || parseInt(xDir) === -1) &&
 				down &&
-				distance > window.innerWidth / 6 &&
-				(parseInt(xDir) === 1 || parseInt(xDir) === -1)
+				distance > window.innerWidth / 6
 			) {
 				cancel(
 					(index.current = clamp(
@@ -49,11 +43,15 @@ function App() {
 			set((i) => {
 				if (i < index.current - 1 || i > index.current + 1)
 					return { display: 'none' };
-				const x = (i - index.current) * window.innerWidth + (down ? xDelta : 0);
+
+				const x =
+					(i - index.current) * window.innerWidth + (down ? xDelta * 10 : 0);
+
+				console.log(x);
 				return { x, display: 'flex' };
 			});
 		},
-	});
+	);
 
 	return (
 		<AppContextProvider>
