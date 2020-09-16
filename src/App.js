@@ -29,7 +29,7 @@ function App() {
 			if (
 				(parseInt(xDir) === 1 || parseInt(xDir) === -1) &&
 				down &&
-				distance > window.innerWidth / 6
+				distance > window.innerWidth / 2
 			) {
 				cancel(
 					(index.current = clamp(
@@ -44,11 +44,8 @@ function App() {
 				if (i < index.current - 1 || i > index.current + 1)
 					return { display: 'none' };
 
-				const x =
-					(i - index.current) * window.innerWidth + (down ? xDelta * 10 : 0);
-
-				console.log(x);
-				return { x, display: 'flex' };
+				const x = (i - index.current) * window.innerWidth + (down ? xDelta : 0);
+				return { x, display: 'block' };
 			});
 		},
 	);
