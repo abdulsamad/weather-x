@@ -1,6 +1,15 @@
-.chart-height {
-	height: 250px;
+/* App Component */
+
+.App {
+	height: 10px;
+	scroll-snap-type: x mandatory;
 }
+
+.page {
+	scroll-snap-align: center;
+}
+
+/* Home Component */
 
 .home::after {
 	content: '';
@@ -12,6 +21,8 @@
 	background-color: rgba(0, 0, 0, 0.5);
 }
 
+/* Settings Component */
+
 .settings {
 	background-color: rgba(0, 0, 0, 0.5);
 }
@@ -21,4 +32,10 @@
 		backdrop-filter: blur(5px);
 		background-color: transparent;
 	}
+}
+
+/* Statistic Component */
+
+.chart-height {
+	height: 250px;
 }

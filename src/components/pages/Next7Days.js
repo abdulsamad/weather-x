@@ -11,9 +11,9 @@ function Next7Days() {
 	dayjs.extend(timezone);
 
 	return (
-		<div className='h-screen w-screen p-5 text-white bg-gradient-to-b from-purple-600 to-teal-500'>
-			<div className='fixed top-0 left-0 right-0 bottom-0 p-5 overflow-auto'>
-				<h2 className='text-center font-bold text-lg mb-5'>Next 7 days</h2>
+		<div className='h-screen w-screen text-white bg-gradient-to-b bg-no-repeat from-purple-600 to-teal-500 relative px-5'>
+			<div className='vertical-scroll h-full w-full overflow-auto'>
+				<h2 className='text-center font-bold text-lg my-5'>Next 7 days</h2>
 				{daily.map(
 					({
 						dt,

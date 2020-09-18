@@ -1,7 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useEffect } from 'react';
 import { AppContextProvider } from './context/context';
-import { useSprings, animated } from 'react-spring';
-import { useDrag } from 'react-use-gesture';
+import scrollSnapPolyfill from 'css-scroll-snap-polyfill';
 import Home from './components/pages/Home';
 import Alert from './components/layout/Alert';
 import Next48Hours from './components/pages/Next48Hours';
@@ -10,61 +9,18 @@ import Next7Days from './components/pages/Next7Days';
 const pages = [<Home />, <Next48Hours />, <Next7Days />];
 
 function App() {
-	const index = useRef(0);
-
-	/* (Lodash Clamp in Vanilla) */
-	const clamp = (num, clamp, higher) => {
-		return higher
-			? Math.min(Math.max(num, clamp), higher)
-			: Math.min(num, clamp);
-	};
-
-	const [props, set] = useSprings(pages.length, (i) => ({
-		x: i * window.innerWidth,
-		display: 'block',
-	}));
-
-	const bind = useDrag(
-		({ down, delta: [xDelta], direction: [xDir], distance, cancel }) => {
-			if (
-				(parseInt(xDir) === 1 || parseInt(xDir) === -1) &&
-				down &&
-				distance > window.innerWidth / 2
-			) {
-				cancel(
-					(index.current = clamp(
-						index.current + (xDir > 0 ? -1 : 1),
-						0,
-						pages.length - 1,
-					)),
-				);
-			}
-
-			set((i) => {
-				if (i < index.current - 1 || i > index.current + 1)
-					return { display: 'none' };
-
-				const x = (i - index.current) * window.innerWidth + (down ? xDelta : 0);
-				return { x, display: 'block' };
-			});
-		},
-	);
+	useEffect(() => {
+		scrollSnapPolyfill();
+	}, []);
 
 	return (
 		<AppContextProvider>
 			<Alert />
-			<div className='relative h-screen w-screen overflow-hidden'>
-				{props.map(({ x, display }, i) => (
-					<animated.div
-						{...bind()}
-						key={i}
-						className='absolute h-full w-full overflow-hidden'
-						style={{
-							display,
-							transform: x.interpolate((x) => `translate3d(${x}px,0,0)`),
-						}}>
+			<div className='App relative h-screen w-screen flex overflow-y-hidden'>
+				{pages.map((component, i) => (
+					<div key={i} className='page h-screen w-screen'>
 						{pages[i]}
-					</animated.div>
+					</div>
 				))}
 			</div>
 		</AppContextProvider>

@@ -7,9 +7,9 @@ function Next48Hours() {
 	const { unit, next48Hours, timeFormat } = useAppContextState();
 
 	return (
-		<div className='h-screen w-screen text-white bg-gradient-to-b from-blue-500 to-red-600 p-5'>
-			<div className='fixed top-0 left-0 right-0 bottom-0 p-5 overflow-auto'>
-				<h2 className='text-center font-bold mb-5 text-lg'>Next 48h</h2>
+		<div className='h-screen w-screen text-white bg-fixed bg-no-repeat bg-gradient-to-b from-blue-500 to-red-600 px-5'>
+			<div className='vertical-scroll h-full w-full overflow-auto'>
+				<h2 className='text-center font-bold my-5 text-lg'>Next 48h</h2>
 				{next48Hours &&
 					next48Hours.map(
 						({ weather, wind_speed, wind_deg, temp, dt }, index) => (
