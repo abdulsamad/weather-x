@@ -34,8 +34,31 @@
 	}
 }
 
-/* Statistic Component */
+/* Statistics Component */
 
 .chart-height {
 	height: 250px;
+}
+
+/* Scrollbar */
+
+.vertical-scroll::-webkit-scrollbar {
+	height: 0;
+	width: 0;
+}
+
+::-webkit-scrollbar {
+	height: 3px;
+	width: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #4299e1;
+	border-radius: 10px;
+	box-shadow: inset 2px 2px 2px rgba(0, 0, 0, 0.25),
+		inset -2px -2px -2px rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-track {
+	background: linear-gradient(90deg, #b3b3b3, #aaaaaa);
 }
