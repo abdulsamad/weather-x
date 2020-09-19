@@ -56,24 +56,25 @@ function Home() {
 		if (!weather) return;
 
 		axios
-			.get('https://pixabay.com/api', {
-				params: {
-					key: process.env.REACT_APP_PIXABAY_API_KEY,
-					q: weather[0].main,
-					image_type: 'photo',
-					safesearch: true,
-					orientation:
-						window.innerWidth > window.innerHeight ? 'horizontal' : 'vertical',
-					min_height: window.innerWidth > window.innerHeight ? 1080 : 720,
-					max_height: window.innerHeight,
-				},
+			.get('https://source.unsplash.com/random/1920x1080', {
+				// params: {
+				// 	key: process.env.REACT_APP_PIXABAY_API_KEY,
+				// 	q: weather[0].main,
+				// 	image_type: 'photo',
+				// 	safesearch: true,
+				// 	orientation:
+				// 		window.innerWidth > window.innerHeight ? 'horizontal' : 'vertical',
+				// 	min_height: window.innerWidth > window.innerHeight ? 1080 : 720,
+				// 	max_height: window.innerHeight,
+				// },
 			})
-			.then(({ data: { hits } }) => {
-				const randomNum = Math.floor(Math.random() * 19) + 1;
+			.then((data) => {
+				// const randomNum = Math.floor(Math.random() * 19) + 1;
 
-				hits[randomNum]
-					? setBackgroundImageURL(hits[randomNum].webformatURL)
-					: setBackgroundImageURL(null);
+				// hits[randomNum]
+				// 	? setBackgroundImageURL(hits[randomNum].webformatURL)
+				// 	: setBackgroundImageURL(null);
+				setBackgroundImageURL(data);
 			})
 			.catch((err) => {
 				setBackgroundImageURL(null);
