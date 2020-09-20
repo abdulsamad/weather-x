@@ -82,11 +82,11 @@ function Home() {
 
 			{/* Home */}
 			<div
-				className={`h-screen w-screen flex flex-col justify-between p-5 text-white home`}
+				className={`h-screen w-screen flex flex-col justify-between p-5 text-white home bg-no-repeat bg-cover bg-center`}
 				style={{
-					background: weather
-						? `url('https://source.unsplash.com/${window.innerWidth}x${window.innerHeight}?${weather[0].main}') center / cover no-repeat`
-						: 'linear-gradient(to top, #FC466B, #3F5EFB)',
+					backgroundImage:
+						weather &&
+						`url('https://source.unsplash.com/${window.innerWidth}x${window.innerHeight}?${weather[0].main}')`,
 				}}>
 				<animated.section style={slideDown} className='mt-5 mb-3 z-10'>
 					<h2 className='text-xl capitalize font-bold'>{place}</h2>
