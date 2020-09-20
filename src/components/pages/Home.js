@@ -4,7 +4,6 @@ import {
 	useAppContextDispatch,
 } from '../../context/context';
 import { useSpring, animated } from 'react-spring';
-import axios from 'axios';
 import dayjs from 'dayjs';
 import Settings from './Settings';
 
@@ -35,7 +34,6 @@ function Home() {
 		},
 	} = useAppContextState();
 	const { setSettingsOpen } = useAppContextDispatch();
-	const [backgroundImageURL, setBackgroundImageURL] = useState(null);
 	const [showmore, setShowMore] = useState(false);
 	const [slideDown, slideDownSet] = useSpring(() => ({
 		from: { opacity: 0, transform: 'translate3d(0, -20%, 0)' },
@@ -54,31 +52,6 @@ function Home() {
 
 	useEffect(() => {
 		if (!weather) return;
-
-		axios
-			.get('https://source.unsplash.com/random/1920x1080', {
-				// params: {
-				// 	key: process.env.REACT_APP_PIXABAY_API_KEY,
-				// 	q: weather[0].main,
-				// 	image_type: 'photo',
-				// 	safesearch: true,
-				// 	orientation:
-				// 		window.innerWidth > window.innerHeight ? 'horizontal' : 'vertical',
-				// 	min_height: window.innerWidth > window.innerHeight ? 1080 : 720,
-				// 	max_height: window.innerHeight,
-				// },
-			})
-			.then((data) => {
-				// const randomNum = Math.floor(Math.random() * 19) + 1;
-
-				// hits[randomNum]
-				// 	? setBackgroundImageURL(hits[randomNum].webformatURL)
-				// 	: setBackgroundImageURL(null);
-				setBackgroundImageURL(data);
-			})
-			.catch((err) => {
-				setBackgroundImageURL(null);
-			});
 
 		// Update spring with new props
 		slideDownSet();
@@ -109,12 +82,10 @@ function Home() {
 
 			{/* Home */}
 			<div
-				className={`h-screen w-screen flex flex-col justify-between p-5 text-white ${
-					backgroundImageURL ? 'home' : ''
-				}`}
+				className={`h-screen w-screen flex flex-col justify-between p-5 text-white home`}
 				style={{
-					background: backgroundImageURL
-						? `url(${backgroundImageURL}) center / cover no-repeat`
+					background: weather
+						? `url('https://source.unsplash.com/${window.innerWidth}x${window.innerHeight}?${weather[0].main}') center / cover no-repeat`
 						: 'linear-gradient(to top, #FC466B, #3F5EFB)',
 				}}>
 				<animated.section style={slideDown} className='mt-5 mb-3 z-10'>
