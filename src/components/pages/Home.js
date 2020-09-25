@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-	useAppContextState,
-	useAppContextDispatch,
-} from '../../context/context';
+import { useAppContextState } from '../../context/context';
 import { useSpring, animated } from 'react-spring';
 import dayjs from 'dayjs';
 import Settings from './Settings';
@@ -12,7 +9,6 @@ function Home() {
 		place,
 		timeFormat,
 		unit,
-		settingsOpen,
 		current: {
 			// dt,
 			feels_like,
@@ -33,8 +29,8 @@ function Home() {
 			snow,
 		},
 	} = useAppContextState();
-	const { setSettingsOpen } = useAppContextDispatch();
-	const [showmore, setShowMore] = useState(false);
+	const [settingsOpen, setSettingsOpen] = useState(false);
+	const [showMore, setShowMore] = useState(false);
 	const [slideDown, slideDownSet] = useSpring(() => ({
 		from: { opacity: 0, transform: 'translate3d(0, -20%, 0)' },
 		to: { opacity: 1, transform: 'translate3d(0, 0, 0)' },
@@ -123,7 +119,7 @@ function Home() {
 								<td className='px-2'>UV Index</td>
 								<td className='px-2'>{uvi}</td>
 							</tr>
-							{showmore && (
+							{showMore && (
 								<>
 									<tr>
 										<td className='px-2'>Wind Speed</td>
@@ -182,37 +178,22 @@ function Home() {
 					<button
 						className='flex items-center px-2 my-2'
 						onClick={() => setShowMore((prevState) => !prevState)}>
-						{showmore ? (
-							<>
-								Less
-								<svg
-									className='w-4 h-4 mx-1'
-									fill='currentColor'
-									viewBox='0 0 20 20'
-									xmlns='http://www.w3.org/2000/svg'>
-									<path
-										fillRule='evenodd'
-										d='M4.293 15.707a1 1 0 010-1.414l5-5a1 1 0 011.414 0l5 5a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414 0zm0-6a1 1 0 010-1.414l5-5a1 1 0 011.414 0l5 5a1 1 0 01-1.414 1.414L10 5.414 5.707 9.707a1 1 0 01-1.414 0z'
-										clipRule='evenodd'
-									/>
-								</svg>
-							</>
-						) : (
-							<>
-								More
-								<svg
-									className='w-4 h-4 mx-1'
-									fill='currentColor'
-									viewBox='0 0 20 20'
-									xmlns='http://www.w3.org/2000/svg'>
-									<path
-										fillRule='evenodd'
-										d='M15.707 4.293a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-5-5a1 1 0 011.414-1.414L10 8.586l4.293-4.293a1 1 0 011.414 0zm0 6a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-5-5a1 1 0 111.414-1.414L10 14.586l4.293-4.293a1 1 0 011.414 0z'
-										clipRule='evenodd'
-									/>
-								</svg>
-							</>
-						)}
+						{showMore ? 'Less' : 'More'}
+						<svg
+							className='w-4 h-4 mx-1'
+							fill='currentColor'
+							viewBox='0 0 20 20'
+							xmlns='http://www.w3.org/2000/svg'>
+							<path
+								fillRule='evenodd'
+								d={
+									showMore
+										? 'M4.293 15.707a1 1 0 010-1.414l5-5a1 1 0 011.414 0l5 5a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414 0zm0-6a1 1 0 010-1.414l5-5a1 1 0 011.414 0l5 5a1 1 0 01-1.414 1.414L10 5.414 5.707 9.707a1 1 0 01-1.414 0z'
+										: 'M15.707 4.293a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-5-5a1 1 0 011.414-1.414L10 8.586l4.293-4.293a1 1 0 011.414 0zm0 6a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-5-5a1 1 0 111.414-1.414L10 14.586l4.293-4.293a1 1 0 011.414 0z'
+								}
+								clipRule='evenodd'
+							/>
+						</svg>
 					</button>
 				</animated.section>
 			</div>

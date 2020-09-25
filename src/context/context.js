@@ -20,7 +20,6 @@ function AppContextProvider({ children }) {
 		next7Days: [],
 		unit: 'metric',
 		timeFormat: 24,
-		settingsOpen: false,
 		alert: null,
 	};
 
@@ -177,12 +176,6 @@ function AppContextProvider({ children }) {
 		return await call.data.address;
 	};
 
-	const setSettingsOpen = (bool) =>
-		dispatch({
-			type: types.SET_SETTINGS_OPEN,
-			payload: bool,
-		});
-
 	const setPlace = (place) =>
 		dispatch({
 			type: types.SET_PLACE,
@@ -249,7 +242,6 @@ function AppContextProvider({ children }) {
 				next7Days: state.next7Days,
 				unit: state.unit,
 				timeFormat: state.timeFormat,
-				settingsOpen: state.settingsOpen,
 				alert: state.alert,
 			}}>
 			<AppContextDispatch.Provider
@@ -257,7 +249,6 @@ function AppContextProvider({ children }) {
 					setPlace,
 					setUnit,
 					setTimeFormat,
-					setSettingsOpen,
 					setAlert,
 					removeAlert,
 					findByGeoLocation,

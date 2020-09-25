@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import {
 	useAppContextState,
 	useAppContextDispatch,
 } from '../../context/context';
 
-function Settings() {
+function Settings({ setSettingsOpen }) {
 	const { unit, timeFormat } = useAppContextState();
 	const {
 		setUnit,
 		setTimeFormat,
-		setSettingsOpen,
 		findByName,
 		findByGeoLocation,
 	} = useAppContextDispatch();
@@ -134,5 +134,9 @@ function Settings() {
 		</div>
 	);
 }
+
+Settings.propTypes = {
+	setSettingsOpen: PropTypes.func.isRequired,
+};
 
 export default Settings;
