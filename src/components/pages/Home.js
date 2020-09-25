@@ -73,7 +73,7 @@ function Home() {
 						d={
 							settingsOpen
 								? 'M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
-								: 'M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z'
+								: 'M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z'
 						}
 						clipRule='evenodd'
 					/>
@@ -82,11 +82,12 @@ function Home() {
 
 			{/* Home */}
 			<div
-				className={`h-screen w-screen flex flex-col justify-between p-5 text-white home bg-no-repeat bg-cover bg-center`}
+				className='w-screen flex flex-col justify-between p-5 text-white home bg-no-repeat bg-cover bg-center'
 				style={{
+					height: 'calc(100vh - 60px)',
 					backgroundImage:
 						weather &&
-						`url('https://source.unsplash.com/${window.innerWidth}x${window.innerHeight}?${weather[0].main}')`,
+						`url('https://source.unsplash.com/1920x1080?${weather[0].main}')`,
 				}}>
 				<animated.section style={slideDown} className='mt-5 mb-3 z-10'>
 					<h2 className='text-xl capitalize font-bold'>{place}</h2>
