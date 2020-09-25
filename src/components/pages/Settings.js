@@ -4,6 +4,7 @@ import {
 	useAppContextState,
 	useAppContextDispatch,
 } from '../../context/context';
+import openWeatherBrandLogo from '../../assets/openweather_logo.png';
 
 function Settings({ setSettingsOpen }) {
 	const { unit, timeFormat } = useAppContextState();
@@ -129,6 +130,14 @@ function Settings({ setSettingsOpen }) {
 						title='Flaticon'>
 						www.flaticon.com
 					</a>
+				</p>
+				<p className='my-5 text-center'>
+					<sub className='font-semibold'>Powered by</sub>
+					<img
+						className='h-24 mx-auto'
+						src={openWeatherBrandLogo}
+						alt='openweather brand logo'
+					/>
 				</p>
 			</footer>
 		</div>
