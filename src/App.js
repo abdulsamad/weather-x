@@ -1,29 +1,31 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { AppContextProvider } from './context/context';
-import scrollSnapPolyfill from 'css-scroll-snap-polyfill';
-import Home from './components/pages/Home';
 import Alert from './components/layout/Alert';
+import BottomNav from './components/layout/BottomNav';
+import Home from './components/pages/Home';
+import Settings from './components/pages/Settings';
 import Next48Hours from './components/pages/Next48Hours';
 import Next7Days from './components/pages/Next7Days';
-
-const pages = [<Home />, <Next48Hours />, <Next7Days />];
+import Statistics from './components/pages/Statistics';
 
 function App() {
-	useEffect(() => {
-		scrollSnapPolyfill();
-	}, []);
-
 	return (
-		<AppContextProvider>
-			<Alert />
-			<div className='App relative h-screen w-screen flex overflow-y-hidden'>
-				{pages.map((component, i) => (
-					<div key={i} className='page h-screen w-screen'>
-						{pages[i]}
-					</div>
-				))}
-			</div>
-		</AppContextProvider>
+		<Router>
+			<AppContextProvider>
+				<Alert />
+				<div className='App relative h-screen w-screen overflow-hidden'>
+					<Switch>
+						<Route path='/' exact component={Home} />
+						<Route path='/Settings' exact component={Settings} />
+						<Route path='/Next48Hours' exact component={Next48Hours} />
+						<Route path='/Next7Days' exact component={Next7Days} />
+						<Route path='/Stats' exact component={Statistics} />
+					</Switch>
+					<BottomNav />
+				</div>
+			</AppContextProvider>
+		</Router>
 	);
 }
 
