@@ -1,9 +1,11 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-function BottomNav({ history }) {
+function BottomNav() {
 	return (
-		<nav className='relative flex bg-white z-10 w-full' style={{ height: 60 }}>
+		<nav
+			className='relative flex bg-white z-10 w-full shadow'
+			style={{ height: 60 }}>
 			<NavLink
 				exact
 				to='/'
