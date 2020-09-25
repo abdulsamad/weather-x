@@ -7,7 +7,11 @@ function Next48Hours() {
 	const { unit, next48Hours, timeFormat } = useAppContextState();
 
 	return (
-		<div className='h-screen w-screen text-white bg-fixed bg-no-repeat bg-gradient-to-b from-blue-500 to-red-600 px-5'>
+		<div
+			className='h-full w-screen text-white bg-fixed bg-no-repeat bg-gradient-to-b from-blue-500 to-red-600 px-5'
+			style={{
+				height: 'calc(100vh - 60px)',
+			}}>
 			<div className='vertical-scroll h-full w-full overflow-auto'>
 				<h2 className='text-center font-bold my-5 text-lg'>Next 48h</h2>
 				{next48Hours &&
