@@ -31,6 +31,10 @@ function Home() {
 	} = useAppContextState();
 	const [settingsOpen, setSettingsOpen] = useState(false);
 	const [showMore, setShowMore] = useState(false);
+	const showMoreAnimation = useSpring({
+		opacity: showMore ? 1 : 0,
+		display: showMore ? '' : 'none',
+	});
 	const [slideDown, slideDownSet] = useSpring(() => ({
 		from: { opacity: 0, transform: 'translate3d(0, -20%, 0)' },
 		to: { opacity: 1, transform: 'translate3d(0, 0, 0)' },
@@ -92,9 +96,9 @@ function Home() {
 					<h4 className='text-lg font-light'>Feels like {feels_like}&deg;</h4>
 				</animated.section>
 
-				<animated.section style={fadeDown} className='mb-5 z-10'>
+				<section className='mb-5 z-10'>
 					<table className='table'>
-						<tbody>
+						<animated.tbody style={fadeDown}>
 							<tr>
 								<td className='px-2'>Humidity</td>
 								<td className='px-2'>{humidity}%</td>
@@ -119,61 +123,61 @@ function Home() {
 								<td className='px-2'>UV Index</td>
 								<td className='px-2'>{uvi}</td>
 							</tr>
-							{showMore && (
-								<>
-									<tr>
-										<td className='px-2'>Wind Speed</td>
-										<td className='px-2'>
-											{unit === 'imperial'
-												? wind_speed + ' mi/hr'
-												: wind_speed + ' m/s'}
-										</td>
-									</tr>
-									{wind_gust && (
-										<tr>
-											<td className='px-2'>Wind Gust</td>
-											<td className='px-2'>
-												{unit === 'imperial'
-													? wind_gust + ' mi/hr'
-													: wind_gust + ' m/s'}
-											</td>
-										</tr>
-									)}
-									<tr>
-										<td className='px-2'>Wind Direction</td>
-										<td className='px-2'>{wind_deg}&deg;</td>
-									</tr>
-									{rain && (
-										<tr>
-											<td className='px-2'>Rain (1h)</td>
-											<td className='px-2'>{rain['1h']} mm</td>
-										</tr>
-									)}
-									{snow && (
-										<tr>
-											<td className='px-2'>Snow (1h)</td>
-											<td className='px-2'>{snow['1h']} mm</td>
-										</tr>
-									)}
-									<tr>
-										<td className='px-2'>Sunrise</td>
-										<td className='px-2'>
-											{timeFormat === 12
-												? dayjs(sunrise * 1000).format('hh:mm A')
-												: dayjs(sunrise * 1000).format('HH:mm')}
-										</td>
-									</tr>
-									<tr>
-										<td className='px-2'>Sunset</td>
-										<td className='px-2'>
-											{timeFormat === 12
-												? dayjs(sunset * 1000).format('hh:mm A')
-												: dayjs(sunset * 1000).format('HH:mm')}
-										</td>
-									</tr>
-								</>
+						</animated.tbody>
+						<animated.tbody
+							style={showMoreAnimation}
+							className='transition-all origin-bottom'>
+							<tr>
+								<td className='px-2'>Wind Speed</td>
+								<td className='px-2'>
+									{unit === 'imperial'
+										? wind_speed + ' mi/hr'
+										: wind_speed + ' m/s'}
+								</td>
+							</tr>
+							{wind_gust && (
+								<tr>
+									<td className='px-2'>Wind Gust</td>
+									<td className='px-2'>
+										{unit === 'imperial'
+											? wind_gust + ' mi/hr'
+											: wind_gust + ' m/s'}
+									</td>
+								</tr>
 							)}
-						</tbody>
+							<tr>
+								<td className='px-2'>Wind Direction</td>
+								<td className='px-2'>{wind_deg}&deg;</td>
+							</tr>
+							{rain && (
+								<tr>
+									<td className='px-2'>Rain (1h)</td>
+									<td className='px-2'>{rain['1h']} mm</td>
+								</tr>
+							)}
+							{snow && (
+								<tr>
+									<td className='px-2'>Snow (1h)</td>
+									<td className='px-2'>{snow['1h']} mm</td>
+								</tr>
+							)}
+							<tr>
+								<td className='px-2'>Sunrise</td>
+								<td className='px-2'>
+									{timeFormat === 12
+										? dayjs(sunrise * 1000).format('hh:mm A')
+										: dayjs(sunrise * 1000).format('HH:mm')}
+								</td>
+							</tr>
+							<tr>
+								<td className='px-2'>Sunset</td>
+								<td className='px-2'>
+									{timeFormat === 12
+										? dayjs(sunset * 1000).format('hh:mm A')
+										: dayjs(sunset * 1000).format('HH:mm')}
+								</td>
+							</tr>
+						</animated.tbody>
 					</table>
 					<button
 						className='flex items-center px-2 my-2'
@@ -195,14 +199,14 @@ function Home() {
 							/>
 						</svg>
 					</button>
-				</animated.section>
+				</section>
 			</div>
 
 			{/* Settings */}
 			<animated.div
 				className='settings h-screen w-screen absolute top-0 left-0 bottom-0 right-0 p-5 text-center text-white z-20'
 				style={slideUp}>
-				<Settings />
+				<Settings setSettingsOpen={setSettingsOpen} />
 			</animated.div>
 		</>
 	);
