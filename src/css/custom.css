@@ -29,7 +29,7 @@
 
 @supports (backdrop-filter: none) {
 	.settings {
-		backdrop-filter: blur(5px);
+		backdrop-filter: blur(10px);
 		background-color: transparent;
 	}
 }
