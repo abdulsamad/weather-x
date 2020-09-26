@@ -204,7 +204,7 @@ function Home() {
 
 			{/* Settings */}
 			<animated.div
-				className='settings h-screen w-screen absolute top-0 left-0 bottom-0 right-0 p-5 text-center text-white z-20'
+				className='settings h-screen w-screen absolute top-0 left-0 bottom-0 right-0 p-5 text-center text-white z-20 overflow-auto'
 				style={slideUp}>
 				<Settings setSettingsOpen={setSettingsOpen} />
 			</animated.div>
