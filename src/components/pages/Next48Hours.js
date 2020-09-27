@@ -32,7 +32,7 @@ function Next48Hours() {
 			style={{
 				height: 'calc(100vh - 60px)',
 			}}>
-			<div className='vertical-scroll h-full w-full overflow-auto'>
+			<div className='vertical-scroll h-full w-full overflow-auto container mx-auto'>
 				<h2 className='text-center font-bold my-5 text-lg'>Next 48h</h2>
 				{next48Hours &&
 					next48Hours.map(
@@ -54,9 +54,7 @@ function Next48Hours() {
 										</span>
 									</h3>
 								)}
-								<animated.div
-									style={trail[index]}
-									className='container mx-auto'>
+								<animated.div style={trail[index]}>
 									<div className='flex bg-gray-100 bg-opacity-25 rounded-lg p-2 my-2'>
 										<div className='w-1/2 flex flex-col items-start my-1'>
 											<span className='font-semibold h-8 flex items-center text-xl'>
