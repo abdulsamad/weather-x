@@ -1,10 +1,30 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { useAppContextState } from '../../context/context';
 import dayjs from 'dayjs';
 import * as icons from '../utils/weather-icons';
+import { useTrail, animated } from 'react-spring';
 
 function Next48Hours() {
 	const { unit, next48Hours, timeFormat } = useAppContextState();
+	const [trail, setTrail] = useTrail(next48Hours.length, () => ({
+		config: {
+			mass: 1,
+			tension: 120,
+			friction: 14,
+		},
+		from: {
+			opacity: 0,
+			transform: 'scaleY(0.8)',
+		},
+		to: {
+			opacity: 1,
+			transform: 'scaleY(1)',
+		},
+	}));
+
+	useEffect(() => {
+		setTrail({});
+	}, [setTrail]);
 
 	return (
 		<div
@@ -34,7 +54,9 @@ function Next48Hours() {
 										</span>
 									</h3>
 								)}
-								<div className='container mx-auto'>
+								<animated.div
+									style={trail[index]}
+									className='container mx-auto'>
 									<div className='flex bg-gray-100 bg-opacity-25 rounded-lg p-2 my-2'>
 										<div className='w-1/2 flex flex-col items-start my-1'>
 											<span className='font-semibold h-8 flex items-center text-xl'>
@@ -75,7 +97,7 @@ function Next48Hours() {
 											/>
 										</div>
 									</div>
-								</div>
+								</animated.div>
 							</Fragment>
 						),
 					)}

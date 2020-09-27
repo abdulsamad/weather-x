@@ -1,14 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAppContextState } from '../../context/context';
 import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
 import * as icons from '../utils/weather-icons';
+import { useTrail, animated } from 'react-spring';
 
 function Next7Days() {
 	const daily = useAppContextState().next7Days;
-	dayjs.extend(utc);
-	dayjs.extend(timezone);
+
+	const [trail, setTrail] = useTrail(daily.length, () => ({
+		config: {
+			mass: 1,
+			tension: 120,
+			friction: 14,
+		},
+		from: {
+			opacity: 0,
+			transform: 'scaleY(0.8)',
+		},
+		to: {
+			opacity: 1,
+			transform: 'scaleY(1)',
+		},
+	}));
+
+	useEffect(() => {
+		setTrail({});
+	}, [setTrail]);
 
 	return (
 		<div
@@ -19,17 +36,21 @@ function Next7Days() {
 			<div className='vertical-scroll h-full w-full overflow-auto'>
 				<h2 className='text-center font-bold text-lg my-5'>Next 7 days</h2>
 				{daily.map(
-					({
-						dt,
-						weather,
-						temp,
-						pressure,
-						humidity,
-						uvi,
-						wind_speed,
-						wind_deg,
-					}) => (
-						<div
+					(
+						{
+							dt,
+							weather,
+							temp,
+							pressure,
+							humidity,
+							uvi,
+							wind_speed,
+							wind_deg,
+						},
+						index,
+					) => (
+						<animated.div
+							style={trail[index]}
 							key={dt}
 							className='bg-gray-100 bg-opacity-25 p-5 rounded-lg my-2'>
 							{
@@ -76,7 +97,7 @@ function Next7Days() {
 									</div>
 								</div>
 							</div>
-						</div>
+						</animated.div>
 					),
 				)}
 			</div>
