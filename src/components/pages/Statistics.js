@@ -9,25 +9,50 @@ import {
 	YAxis,
 	Tooltip,
 	Legend,
+	LineChart,
+	Line,
+	Bar,
+	BarChart,
+	ResponsiveContainer,
 } from 'recharts';
 
 function WeeklyStats() {
 	const { timeFormat, next7Days, next48Hours } = useAppContextState();
 
-	const next48HoursChartData = next48Hours.map(
-		({ dt, temp, weather, wind_speed }) => {
-			const time =
-				timeFormat === 12
-					? dayjs(dt * 1000).format('hh:mm A')
-					: dayjs(dt * 1000).format('HH:mm');
+	const next48HoursTempData = next48Hours.map(({ dt, temp }) => {
+		const time =
+			timeFormat === 12
+				? dayjs(dt * 1000).format('hh:mm A')
+				: dayjs(dt * 1000).format('HH:mm');
+
+		return {
+			time,
+			temp,
+		};
+	});
+
+	const nextWeekTempData = next7Days.map(
+		({ dt, temp: { min, max, day, night } }) => {
+			const time = dayjs(dt * 1000).format('dd');
 
 			return {
 				time,
-				temp,
-				wind_speed,
+				min,
+				max,
+				day,
+				night,
 			};
 		},
 	);
+
+	const nextWeekUVIData = next7Days.map(({ dt, uvi }) => {
+		const time = dayjs(dt * 1000).format('dd');
+
+		return {
+			time,
+			uvi,
+		};
+	});
 
 	return (
 		<div
@@ -36,14 +61,25 @@ function WeeklyStats() {
 				height: 'calc(100vh - 60px)',
 			}}>
 			<h2 className='uppercase text-center text-lg font-bold my-5'>
-				Next 48 Hours
+				Temperature Next Week
 			</h2>
-			<div className='overflow-x-auto'>
-				<AreaChart
-					height={250}
-					width={2800}
-					data={next48HoursChartData}
-					margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+			<div className='my-5'>
+				<ResponsiveContainer height={200}>
+					<LineChart data={nextWeekTempData}>
+						<XAxis dataKey='time' />
+						<YAxis />
+						<Tooltip />
+						<Legend />
+						<Line type='monotone' dataKey='min' stroke='#8884d8' />
+						<Line type='monotone' dataKey='max' stroke='#82ca9d' />
+					</LineChart>
+				</ResponsiveContainer>
+			</div>
+			<h2 className='uppercase text-center text-lg font-bold my-5'>
+				Temperature Next 48 Hours
+			</h2>
+			<div className='overflow-x-auto my-5'>
+				<AreaChart height={250} width={2800} data={next48HoursTempData}>
 					<defs>
 						<linearGradient id='temp' x1='0' y1='0' x2='0' y2='1'>
 							<stop offset='5%' stopColor='#8884d8' stopOpacity={0.8} />
@@ -64,42 +100,19 @@ function WeeklyStats() {
 					/>
 				</AreaChart>
 			</div>
-
-			<div className='mt-5'>
-				<h3 className='text-center'>Precipitation</h3>
-				<div className='chart-height flex justify-between w-full	'>
-					{next7Days.map((day) => (
-						<div
-							key={day.dt}
-							className='max-h-full flex flex-col justify-center item-center'>
-							<h4 className='my-4 font-semibold'>26&deg;</h4>
-							<div className='mx-auto h-full inline-block w-2 rounded-full bg-gradient-to-b from-green-400 via-red-500 to-pink-500 bg-opacity-300'>
-								<div
-									style={{ height: '80%' }}
-									className='inline-block shadow-none w-2 bg-gray-200 rounded-t-full'></div>
-							</div>
-							<h4 className='my-4 font-semibold'>Sun</h4>
-						</div>
-					))}
-				</div>
-			</div>
-			<div className='mt-5'>
-				<h3 className='text-center'>Wind</h3>
-				<div className='chart-height flex justify-between w-full'>
-					{next7Days.map((day) => (
-						<div
-							key={day.dt}
-							className='max-h-full flex flex-col justify-center item-center'>
-							<h4 className='my-4 font-semibold'>26&deg;</h4>
-							<div className='mx-auto h-full inline-block w-2 rounded-full bg-gradient-to-b from-green-400 via-red-500 to-pink-500 bg-opacity-300'>
-								<div
-									style={{ height: '80%' }}
-									className='inline-block shadow-none w-2 bg-gray-200 rounded-t-full'></div>
-							</div>
-							<h4 className='my-4 font-semibold'>Sun</h4>
-						</div>
-					))}
-				</div>
+			<h2 className='uppercase text-center text-lg font-bold my-5'>
+				UV Index Next Week
+			</h2>
+			<div className='my-5'>
+				<ResponsiveContainer height={200}>
+					<BarChart data={nextWeekUVIData}>
+						<XAxis dataKey='time' />
+						<YAxis />
+						<Tooltip />
+						<Legend />
+						<Bar dataKey='uvi' fill='#82ca9d' />
+					</BarChart>
+				</ResponsiveContainer>
 			</div>
 		</div>
 	);
