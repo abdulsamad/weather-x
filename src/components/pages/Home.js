@@ -3,12 +3,14 @@ import { useAppContextState } from '../../context/context';
 import { useSpring, animated } from 'react-spring';
 import dayjs from 'dayjs';
 import Settings from './Settings';
+import * as background from '../utils/background-images';
 
 function Home() {
 	const {
 		place,
 		timeFormat,
 		unit,
+		downloadBackground,
 		current: {
 			// dt,
 			feels_like,
@@ -86,8 +88,11 @@ function Home() {
 				style={{
 					height: 'calc(100vh - 60px)',
 					backgroundImage:
-						weather &&
-						`url('https://source.unsplash.com/1920x1080?${weather[0].main}')`,
+						weather && downloadBackground
+							? `url('https://source.unsplash.com/1920x1080?${weather[0].main}')`
+							: `url('${
+									background['_' + (Math.floor(Math.random() * 10) + 1)]
+							  }')`,
 				}}>
 				<animated.section style={slideDown} className='mt-5 mb-3 z-10'>
 					<h2 className='text-xl capitalize font-bold'>{place}</h2>

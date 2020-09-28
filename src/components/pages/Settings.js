@@ -7,12 +7,13 @@ import {
 import openWeatherBrandLogo from '../../assets/openweather_logo.png';
 
 function Settings({ setSettingsOpen }) {
-	const { unit, timeFormat } = useAppContextState();
+	const { unit, timeFormat, downloadBackground } = useAppContextState();
 	const {
 		setUnit,
 		setTimeFormat,
 		findByName,
 		findByGeoLocation,
+		setDownloadBackgroundOnLoad,
 	} = useAppContextDispatch();
 	const [cityInpVal, setCityInpVal] = useState('');
 
@@ -111,6 +112,21 @@ function Settings({ setSettingsOpen }) {
 							<span>12h</span>
 						</button>
 					</div>
+				</div>
+				<div className='my-5'>
+					<input
+						type='checkbox'
+						onClick={() => setDownloadBackgroundOnLoad(!downloadBackground)}
+						className='mr-2 leading-tight'
+						id='downloadImageCheckbox'
+					/>
+					<label htmlFor='downloadImageCheckbox'>
+						Always download new background image.
+						<div className='text-red-500 text-xs italic'>
+							<strong>Note:</strong>This may increase initial load time
+							depending upon the internet connection.
+						</div>
+					</label>
 				</div>
 			</div>
 			<footer className='p-5'>
