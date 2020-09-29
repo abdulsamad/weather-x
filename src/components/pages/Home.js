@@ -52,15 +52,18 @@ function Home() {
 		},
 		transform: settingsOpen ? 'translateY(0)' : 'translateY(100vh)',
 	});
-	const backgroundImage = useRef(null);
+	const backgroundImage = useRef();
 
 	useEffect(() => {
 		if (!weather) return;
 
 		// Set background image default or download new
 		backgroundImage.current = downloadBackground
-			? `url('https://source.unsplash.com/1920x1080?${weather[0].main}')`
-			: `url('${background['_' + (Math.floor(Math.random() * 10) + 1)]}')`;
+			? `https://source.unsplash.com/${window.innerWidth}x${window.innerHeight}?${weather[0].main}`
+			: background[weather[0].main.toLowerCase()];
+
+		if (!backgroundImage.current)
+			backgroundImage.current = background['drizzle'];
 
 		// Update spring with new props
 		slideDownSet();
@@ -106,7 +109,7 @@ function Home() {
 				className='w-screen flex flex-col justify-between p-5 text-white home bg-no-repeat bg-cover bg-center'
 				style={{
 					height: 'calc(100vh - 60px)',
-					backgroundImage: backgroundImage.current,
+					backgroundImage: `url('${backgroundImage.current}')`,
 				}}>
 				<animated.section style={slideDown} className='mt-5 mb-3 z-10'>
 					<h2 className='text-xl capitalize font-bold'>{place}</h2>
