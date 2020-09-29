@@ -5,9 +5,9 @@ import * as icons from '../utils/weather-icons';
 import { useTrail, animated } from 'react-spring';
 
 function Next7Days() {
-	const daily = useAppContextState().next7Days;
+	const { next7Days, loading } = useAppContextState();
 
-	const [trail, setTrail] = useTrail(daily.length, () => ({
+	const [trail, setTrail] = useTrail(next7Days.length, () => ({
 		config: {
 			mass: 1,
 			tension: 120,
@@ -27,6 +27,18 @@ function Next7Days() {
 		setTrail({});
 	}, [setTrail]);
 
+	if (loading) {
+		return (
+			<div
+				className=' w-screen flex justify-center items-center'
+				style={{
+					height: 'calc(100vh - 60px)',
+				}}>
+				<div className='loader animate-spin w-12 h-12 border-4 border-blue-500 rounded-full'></div>
+			</div>
+		);
+	}
+
 	return (
 		<div
 			className='h-full w-screen text-white bg-gradient-to-b bg-no-repeat from-purple-600 to-teal-500 relative px-5'
@@ -35,7 +47,7 @@ function Next7Days() {
 			}}>
 			<div className='vertical-scroll h-full w-full overflow-auto container mx-auto'>
 				<h2 className='text-center font-bold text-lg my-5'>Next 7 days</h2>
-				{daily.map(
+				{next7Days.map(
 					(
 						{
 							dt,

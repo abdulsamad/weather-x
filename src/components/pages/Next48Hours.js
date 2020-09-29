@@ -5,7 +5,7 @@ import * as icons from '../utils/weather-icons';
 import { useTrail, animated } from 'react-spring';
 
 function Next48Hours() {
-	const { unit, next48Hours, timeFormat } = useAppContextState();
+	const { unit, next48Hours, timeFormat, loading } = useAppContextState();
 	const [trail, setTrail] = useTrail(next48Hours.length, () => ({
 		config: {
 			mass: 1,
@@ -25,6 +25,18 @@ function Next48Hours() {
 	useEffect(() => {
 		setTrail({});
 	}, [setTrail]);
+
+	if (loading) {
+		return (
+			<div
+				className=' w-screen flex justify-center items-center'
+				style={{
+					height: 'calc(100vh - 60px)',
+				}}>
+				<div className='loader animate-spin w-12 h-12 border-4 border-blue-500 rounded-full'></div>
+			</div>
+		);
+	}
 
 	return (
 		<div

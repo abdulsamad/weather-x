@@ -2,6 +2,7 @@
 
 .App {
 	height: 10px;
+	-ms-scroll-snap-type: x mandatory;
 	scroll-snap-type: x mandatory;
 }
 
@@ -27,8 +28,9 @@
 	background-color: rgba(0, 0, 0, 0.5);
 }
 
-@supports (backdrop-filter: none) {
+@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
 	.settings {
+		-webkit-backdrop-filter: blur(10px);
 		backdrop-filter: blur(10px);
 		background-color: transparent;
 	}
@@ -61,4 +63,10 @@
 
 ::-webkit-scrollbar-track {
 	background: linear-gradient(90deg, #b3b3b3, #aaaaaa);
+}
+
+/* Loader */
+
+.App .loader {
+	border-right-color: transparent;
 }

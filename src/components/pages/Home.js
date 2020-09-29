@@ -11,6 +11,7 @@ function Home() {
 		timeFormat,
 		unit,
 		downloadBackground,
+		loading,
 		current: {
 			// dt,
 			feels_like,
@@ -65,6 +66,18 @@ function Home() {
 		slideDownSet();
 		fadeDownSet();
 	}, [weather, slideDownSet, fadeDownSet, downloadBackground]);
+
+	if (loading) {
+		return (
+			<div
+				className=' w-screen flex justify-center items-center'
+				style={{
+					height: 'calc(100vh - 60px)',
+				}}>
+				<div className='loader animate-spin w-12 h-12 border-4 border-blue-500 rounded-full'></div>
+			</div>
+		);
+	}
 
 	return (
 		<>

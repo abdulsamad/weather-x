@@ -14,6 +14,7 @@ const AppContextDispatch = createContext();
 
 function AppContextProvider({ children }) {
 	const initialState = {
+		loading: true,
 		place: null,
 		current: {},
 		next48Hours: [],
@@ -57,6 +58,11 @@ function AppContextProvider({ children }) {
 		state.place
 			? findByName(state.place, state.unit)
 			: findByGeoLocation(state.unit);
+
+		dispatch({
+			type: types.SET_LOADING,
+			payload: false,
+		});
 
 		// eslint-disable-next-line
 	}, [state.unit]);
@@ -268,6 +274,7 @@ function AppContextProvider({ children }) {
 				timeFormat: state.timeFormat,
 				alert: state.alert,
 				downloadBackground: state.downloadBackground,
+				loading: state.loading,
 			}}>
 			<AppContextDispatch.Provider
 				value={{

@@ -2,6 +2,12 @@ import * as types from './types';
 
 export default (state, action) => {
 	switch (action.type) {
+		case types.SET_LOADING:
+			return {
+				...state,
+				loading: action.payload,
+			};
+
 		case types.SET_CURRENT:
 			return {
 				...state,
