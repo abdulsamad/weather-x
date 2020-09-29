@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useAppContextState } from '../../context/context';
 import { useSpring, animated } from 'react-spring';
 import dayjs from 'dayjs';
@@ -51,14 +51,20 @@ function Home() {
 		},
 		transform: settingsOpen ? 'translateY(0)' : 'translateY(100vh)',
 	});
+	const backgroundImage = useRef(null);
 
 	useEffect(() => {
 		if (!weather) return;
 
+		// Set background image default or download new
+		backgroundImage.current = downloadBackground
+			? `url('https://source.unsplash.com/1920x1080?${weather[0].main}')`
+			: `url('${background['_' + (Math.floor(Math.random() * 10) + 1)]}')`;
+
 		// Update spring with new props
 		slideDownSet();
 		fadeDownSet();
-	}, [weather, slideDownSet, fadeDownSet]);
+	}, [weather, slideDownSet, fadeDownSet, downloadBackground]);
 
 	return (
 		<>
@@ -87,12 +93,7 @@ function Home() {
 				className='w-screen flex flex-col justify-between p-5 text-white home bg-no-repeat bg-cover bg-center'
 				style={{
 					height: 'calc(100vh - 60px)',
-					backgroundImage:
-						weather && downloadBackground
-							? `url('https://source.unsplash.com/1920x1080?${weather[0].main}')`
-							: `url('${
-									background['_' + (Math.floor(Math.random() * 10) + 1)]
-							  }')`,
+					backgroundImage: backgroundImage.current,
 				}}>
 				<animated.section style={slideDown} className='mt-5 mb-3 z-10'>
 					<h2 className='text-xl capitalize font-bold'>{place}</h2>

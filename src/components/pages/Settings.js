@@ -116,7 +116,8 @@ function Settings({ setSettingsOpen }) {
 				<div className='my-5'>
 					<input
 						type='checkbox'
-						onClick={() => setDownloadBackgroundOnLoad(!downloadBackground)}
+						checked={downloadBackground}
+						onChange={() => setDownloadBackgroundOnLoad(!downloadBackground)}
 						className='mr-2 leading-tight'
 						id='downloadImageCheckbox'
 					/>

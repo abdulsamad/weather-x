@@ -56,6 +56,12 @@ export default (state, action) => {
 				alert: null,
 			};
 
+		case types.SET_BG_DOWNLOAD_ON_LOAD:
+			return {
+				...state,
+				downloadBackground: action.payload,
+			};
+
 		default:
 			return state;
 	}

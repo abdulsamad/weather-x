@@ -7,3 +7,4 @@ export const SET_UNIT = 'SET_UNIT';
 export const SET_SETTINGS_OPEN = 'SET_SETTINGS_OPEN';
 export const SET_ALERT = 'SET_ALERT';
 export const REMOVE_ALERT = 'REMOVE_ALERT';
+export const SET_BG_DOWNLOAD_ON_LOAD = 'SET_BG_DOWNLOAD_ON_LOAD';

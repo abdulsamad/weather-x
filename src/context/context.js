@@ -21,6 +21,7 @@ function AppContextProvider({ children }) {
 		unit: 'metric',
 		timeFormat: 24,
 		alert: null,
+		downloadBackground: false,
 	};
 
 	const [state, dispatch] = useReducer(Reducer, initialState);
@@ -41,6 +42,12 @@ function AppContextProvider({ children }) {
 				dispatch({
 					type: types.SET_TIME_FORMAT,
 					payload: parsedSettings.timeFormat,
+				});
+
+			parsedSettings.downloadBackground &&
+				dispatch({
+					type: types.SET_BG_DOWNLOAD_ON_LOAD,
+					payload: parsedSettings.downloadBackground,
 				});
 		}
 	}, [settingsStr]);
@@ -211,8 +218,6 @@ function AppContextProvider({ children }) {
 			localStorage.setItem('settings', JSON.stringify({ unit }));
 		}
 
-		console.log(unit);
-
 		dispatch({
 			type: types.SET_UNIT,
 			payload: unit,
@@ -233,6 +238,25 @@ function AppContextProvider({ children }) {
 			type: types.REMOVE_ALERT,
 		});
 
+	const setDownloadBackgroundOnLoad = (downloadBackground) => {
+		if (settingsStr.current) {
+			localStorage.setItem(
+				'settings',
+				JSON.stringify({
+					...JSON.parse(settingsStr.current),
+					downloadBackground,
+				}),
+			);
+		} else {
+			localStorage.setItem('settings', JSON.stringify({ downloadBackground }));
+		}
+
+		dispatch({
+			type: types.SET_BG_DOWNLOAD_ON_LOAD,
+			payload: downloadBackground,
+		});
+	};
+
 	return (
 		<AppContext.Provider
 			value={{
@@ -243,6 +267,7 @@ function AppContextProvider({ children }) {
 				unit: state.unit,
 				timeFormat: state.timeFormat,
 				alert: state.alert,
+				downloadBackground: state.downloadBackground,
 			}}>
 			<AppContextDispatch.Provider
 				value={{
@@ -253,6 +278,7 @@ function AppContextProvider({ children }) {
 					removeAlert,
 					findByGeoLocation,
 					findByName,
+					setDownloadBackgroundOnLoad,
 				}}>
 				{children}
 			</AppContextDispatch.Provider>
