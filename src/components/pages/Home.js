@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppContextState } from '../../context/context';
 import { useSpring, animated } from 'react-spring';
 import dayjs from 'dayjs';
@@ -52,22 +52,23 @@ function Home() {
 		},
 		transform: settingsOpen ? 'translateY(0)' : 'translateY(100vh)',
 	});
-	const backgroundImage = useRef();
+	const [backgroundImage, setBackgroundImage] = useState(background['drizzle']);
 
 	useEffect(() => {
 		if (!weather) return;
 
 		// Set background image default or download new
-		backgroundImage.current = downloadBackground
-			? `https://source.unsplash.com/${window.innerWidth}x${window.innerHeight}?${weather[0].main}`
-			: background[weather[0].main.toLowerCase()];
-
-		if (!backgroundImage.current)
-			backgroundImage.current = background['drizzle'];
+		downloadBackground
+			? setBackgroundImage(
+					`https://source.unsplash.com/${window.innerWidth}x${window.innerHeight}?${weather[0].main}`,
+			  )
+			: setBackgroundImage(background[weather[0].main.toLowerCase()]);
 
 		// Update spring with new props
 		slideDownSet();
 		fadeDownSet();
+
+		// eslint-disable-next-line
 	}, [weather, slideDownSet, fadeDownSet, downloadBackground]);
 
 	if (loading) {
@@ -109,7 +110,7 @@ function Home() {
 				className='w-screen flex flex-col justify-between p-5 text-white home bg-no-repeat bg-cover bg-center'
 				style={{
 					height: 'calc(100vh - 60px)',
-					backgroundImage: `url('${backgroundImage.current}')`,
+					backgroundImage: `url('${backgroundImage}')`,
 				}}>
 				<animated.section style={slideDown} className='mt-5 mb-3 z-10'>
 					<h2 className='text-xl capitalize font-bold'>{place}</h2>
