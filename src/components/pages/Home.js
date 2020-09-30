@@ -110,7 +110,7 @@ function Home() {
 				className='w-screen flex flex-col justify-between p-5 text-white home bg-no-repeat bg-cover bg-center'
 				style={{
 					height: 'calc(100vh - 60px)',
-					backgroundImage: `url('${backgroundImage}')`,
+					backgroundImage: weather && `url('${backgroundImage}')`,
 				}}>
 				<animated.section style={slideDown} className='mt-5 mb-3 z-10'>
 					<h2 className='text-xl capitalize font-bold'>{place}</h2>
