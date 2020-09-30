@@ -203,7 +203,7 @@ function Home() {
 						</animated.tbody>
 					</table>
 					<button
-						className='flex items-center px-2 my-2'
+						className='flex items-center px-2 my-2 focus:outline-none'
 						onClick={() => setShowMore((prevState) => !prevState)}>
 						{showMore ? 'Less' : 'More'}
 						<svg
