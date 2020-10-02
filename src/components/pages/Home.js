@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useAppContextState } from '../../context/context';
+import { useParams } from 'react-router-dom';
+import {
+	useAppContextState,
+	useAppContextDispatch,
+} from '../../context/context';
 import { useSpring, animated } from 'react-spring';
 import dayjs from 'dayjs';
 import Settings from './Settings';
@@ -32,6 +36,7 @@ function Home() {
 			snow,
 		},
 	} = useAppContextState();
+	const { findByName, setPlace } = useAppContextDispatch();
 	const [settingsOpen, setSettingsOpen] = useState(false);
 	const [showMore, setShowMore] = useState(false);
 	const showMoreAnimation = useSpring({
@@ -53,6 +58,18 @@ function Home() {
 		transform: settingsOpen ? 'translateY(0)' : 'translateY(100vh)',
 	});
 	const [backgroundImage, setBackgroundImage] = useState(background['drizzle']);
+	const { city } = useParams();
+
+	useEffect(() => {
+		place !== city && findByName(city, unit);
+		setPlace(city);
+
+		// Update spring with new props
+		slideDownSet();
+		fadeDownSet();
+
+		// eslint-disable-next-line
+	}, []);
 
 	useEffect(() => {
 		if (!weather) return;
@@ -64,12 +81,8 @@ function Home() {
 			  )
 			: setBackgroundImage(background[weather[0].main.toLowerCase()]);
 
-		// Update spring with new props
-		slideDownSet();
-		fadeDownSet();
-
 		// eslint-disable-next-line
-	}, [weather, slideDownSet, fadeDownSet, downloadBackground]);
+	}, [weather, downloadBackground]);
 
 	if (loading) {
 		return (
@@ -113,7 +126,7 @@ function Home() {
 					backgroundImage: weather && `url('${backgroundImage}')`,
 				}}>
 				<animated.section style={slideDown} className='mt-5 mb-3 z-10'>
-					<h2 className='text-xl capitalize font-bold'>{place}</h2>
+					<h2 className='text-xl capitalize font-bold'>{city}</h2>
 					<h2 className='text-6xl'>{temp}&deg;</h2>
 					{weather && <h3 className='text-xl'>{weather[0].main}</h3>}
 					<h4 className='text-lg font-light'>Feels like {feels_like}&deg;</h4>

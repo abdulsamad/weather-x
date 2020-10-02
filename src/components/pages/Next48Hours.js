@@ -1,11 +1,22 @@
 import React, { Fragment, useEffect } from 'react';
-import { useAppContextState } from '../../context/context';
+import { useParams } from 'react-router-dom';
+import {
+	useAppContextDispatch,
+	useAppContextState,
+} from '../../context/context';
 import dayjs from 'dayjs';
 import * as icons from '../utils/weather-icons';
 import { useTrail, animated } from 'react-spring';
 
 function Next48Hours() {
-	const { unit, next48Hours, timeFormat, loading } = useAppContextState();
+	const {
+		unit,
+		next48Hours,
+		timeFormat,
+		loading,
+		place,
+	} = useAppContextState();
+	const { findByName, setPlace } = useAppContextDispatch();
 	const [trail, setTrail] = useTrail(next48Hours.length, () => ({
 		config: {
 			mass: 1,
@@ -21,10 +32,15 @@ function Next48Hours() {
 			transform: 'scaleY(1)',
 		},
 	}));
+	const { city } = useParams();
 
 	useEffect(() => {
+		place !== city && findByName(city, unit);
+		setPlace(city);
+
 		setTrail({});
-	}, [setTrail]);
+		// eslint-disable-next-line
+	}, []);
 
 	if (loading) {
 		return (

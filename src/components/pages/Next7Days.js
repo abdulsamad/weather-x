@@ -1,12 +1,16 @@
 import React, { useEffect } from 'react';
-import { useAppContextState } from '../../context/context';
+import { useParams } from 'react-router-dom';
+import {
+	useAppContextDispatch,
+	useAppContextState,
+} from '../../context/context';
 import dayjs from 'dayjs';
 import * as icons from '../utils/weather-icons';
 import { useTrail, animated } from 'react-spring';
 
 function Next7Days() {
-	const { next7Days, loading } = useAppContextState();
-
+	const { next7Days, loading, place, unit } = useAppContextState();
+	const { setPlace, findByName } = useAppContextDispatch();
 	const [trail, setTrail] = useTrail(next7Days.length, () => ({
 		config: {
 			mass: 1,
@@ -22,10 +26,15 @@ function Next7Days() {
 			transform: 'scaleY(1)',
 		},
 	}));
+	const { city } = useParams();
 
 	useEffect(() => {
+		place !== city && findByName(city, unit);
+		setPlace(city);
+
 		setTrail({});
-	}, [setTrail]);
+		// eslint-disable-next-line
+	}, []);
 
 	if (loading) {
 		return (

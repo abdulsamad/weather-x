@@ -1,5 +1,9 @@
-import React from 'react';
-import { useAppContextState } from '../../context/context';
+import React, { useEffect } from 'react';
+import {
+	useAppContextState,
+	useAppContextDispatch,
+} from '../../context/context';
+import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import {
 	AreaChart,
@@ -17,7 +21,23 @@ import {
 } from 'recharts';
 
 function WeeklyStats() {
-	const { timeFormat, next7Days, next48Hours, loading } = useAppContextState();
+	const {
+		timeFormat,
+		next7Days,
+		next48Hours,
+		loading,
+		place,
+		unit,
+	} = useAppContextState();
+	const { findByName, setPlace } = useAppContextDispatch();
+	const { city } = useParams();
+
+	useEffect(() => {
+		place !== city && findByName(city, unit);
+		setPlace(city);
+
+		// eslint-disable-next-line
+	}, []);
 
 	const next48HoursTempData = next48Hours.map(({ dt, temp }) => {
 		const time =

@@ -1,14 +1,17 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { useAppContextState } from '../../context/context';
 
 function BottomNav() {
+	const { place } = useAppContextState();
+
 	return (
 		<nav
 			className='relative flex bg-white z-10 w-full shadow'
 			style={{ height: 60 }}>
 			<NavLink
 				exact
-				to='/'
+				to={`/${place}`}
 				activeClassName='text-blue-500 border-b-2 border-blue-500 font-medium'
 				className='text-gray-600 py-4 px-6 block focus:outline-none w-full'>
 				<svg
@@ -21,7 +24,7 @@ function BottomNav() {
 			</NavLink>
 			<NavLink
 				exact
-				to='/Next48Hours'
+				to={`/${place}/Next48Hours`}
 				activeClassName='text-blue-500 border-b-2 border-blue-500 font-medium'
 				className='text-gray-600 py-4 px-6 block focus:outline-none w-full'>
 				<svg
@@ -38,7 +41,7 @@ function BottomNav() {
 			</NavLink>
 			<NavLink
 				exact
-				to='/Next7Days'
+				to={`/${place}/Next7Days`}
 				activeClassName='text-blue-500 border-b-2 border-blue-500 font-medium'
 				className='text-gray-600 py-4 px-6 block focus:outline-none w-full'>
 				<svg
@@ -55,7 +58,7 @@ function BottomNav() {
 			</NavLink>
 			<NavLink
 				exact
-				to='/Stats'
+				to={`/${place}/Stats`}
 				activeClassName='text-blue-500 border-b-2 border-blue-500 font-medium'
 				className='text-gray-600 py-4 px-6 block focus:outline-none w-full'>
 				<svg
