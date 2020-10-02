@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import {
 	useAppContextState,
@@ -17,6 +17,7 @@ function Settings({ setSettingsOpen, history }) {
 		setDownloadBackgroundOnLoad,
 	} = useAppContextDispatch();
 	const [cityInpVal, setCityInpVal] = useState('');
+	const cityInp = useRef();
 
 	const onSubmit = (ev) => {
 		ev.preventDefault();
@@ -24,6 +25,7 @@ function Settings({ setSettingsOpen, history }) {
 		history.push(`/${cityInpVal}`);
 		setCityInpVal('');
 		setSettingsOpen(false);
+		cityInp.current.blur();
 	};
 
 	const changeUnit = (unit) => (ev) => setUnit(unit);
@@ -52,6 +54,7 @@ function Settings({ setSettingsOpen, history }) {
 				<form onSubmit={onSubmit}>
 					<input
 						type='text'
+						ref={cityInp}
 						onChange={(ev) => setCityInpVal(ev.target.value)}
 						value={cityInpVal}
 						className='bg-white shadow focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full text-black appearance-none leading-normal mt-5 mb-2'
