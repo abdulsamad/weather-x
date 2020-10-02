@@ -11,6 +11,7 @@ function Settings({ setSettingsOpen, history }) {
 	const { unit, timeFormat, downloadBackground } = useAppContextState();
 	const {
 		setUnit,
+		setPlace,
 		setTimeFormat,
 		findByName,
 		reverseGeocode,
@@ -22,6 +23,7 @@ function Settings({ setSettingsOpen, history }) {
 	const onSubmit = (ev) => {
 		ev.preventDefault();
 		findByName(cityInpVal, unit);
+		setPlace(cityInpVal);
 		history.push(`/${cityInpVal}`);
 		setCityInpVal('');
 		setSettingsOpen(false);
