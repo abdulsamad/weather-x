@@ -5,6 +5,7 @@ import {
 	useAppContextDispatch,
 } from '../../context/context';
 import openWeatherBrandLogo from '../../assets/openweather_logo.png';
+import unsplashBrandLogo from '../../assets/unsplash_logo.png';
 
 function Settings({ setSettingsOpen }) {
 	const { unit, timeFormat, downloadBackground } = useAppContextState();
@@ -124,7 +125,7 @@ function Settings({ setSettingsOpen }) {
 					<label htmlFor='downloadImageCheckbox'>
 						Always download new background image.
 						<div className='text-red-500 text-xs italic'>
-							<strong>Note:</strong>This may increase initial load time
+							<strong>Note:</strong> This may increase initial load time
 							depending upon the internet connection.
 						</div>
 					</label>
@@ -132,7 +133,7 @@ function Settings({ setSettingsOpen }) {
 			</div>
 			<footer className='p-5'>
 				<h6 className='font-semibold'>Credits -</h6>
-				<p>
+				<p className='my-2'>
 					Logo/Favicon made by{' '}
 					<a
 						className='font-semibold'
@@ -148,12 +149,22 @@ function Settings({ setSettingsOpen }) {
 						www.flaticon.com
 					</a>
 				</p>
-				<p className='my-5 text-center'>
+				<p className='text-center'>
 					<sub className='font-semibold'>Powered by</sub>
 					<img
-						className='h-24 mx-auto'
+						style={{ width: 180 }}
+						className='mx-auto'
 						src={openWeatherBrandLogo}
 						alt='openweather brand logo'
+					/>
+				</p>
+				<p className='text-center'>
+					<sub className='font-semibold'>Images by</sub>
+					<img
+						style={{ width: 180 }}
+						className='mx-auto'
+						src={unsplashBrandLogo}
+						alt='unsplash brand logo'
 					/>
 				</p>
 			</footer>
