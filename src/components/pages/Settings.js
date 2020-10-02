@@ -7,20 +7,21 @@ import {
 import openWeatherBrandLogo from '../../assets/openweather_logo.png';
 import unsplashBrandLogo from '../../assets/unsplash_logo.png';
 
-function Settings({ setSettingsOpen }) {
+function Settings({ setSettingsOpen, history }) {
 	const { unit, timeFormat, downloadBackground } = useAppContextState();
 	const {
 		setUnit,
 		setTimeFormat,
 		findByName,
-		findByGeoLocation,
 		setDownloadBackgroundOnLoad,
+		reverseGeocode,
 	} = useAppContextDispatch();
 	const [cityInpVal, setCityInpVal] = useState('');
 
 	const onSubmit = (ev) => {
 		ev.preventDefault();
 		findByName(cityInpVal, unit);
+		history.push(`/${cityInpVal}`);
 		setCityInpVal('');
 		setSettingsOpen(false);
 	};
@@ -28,6 +29,20 @@ function Settings({ setSettingsOpen }) {
 	const changeUnit = (unit) => (ev) => setUnit(unit);
 
 	const changeTimeFormat = (format) => (ev) => setTimeFormat(format);
+
+	const openCurrentLocation = () => {
+		navigator.geolocation.getCurrentPosition(
+			({ coords: { latitude: lat, longitude: lon }, timestamp }) => {
+				reverseGeocode(lat, lon).then(
+					({ city, state_district, state, country }) => {
+						history.push(`/${city || state_district || state || country}`);
+					},
+				);
+			},
+		);
+
+		setSettingsOpen(false);
+	};
 
 	return (
 		<div className='container h-full mx-auto flex flex-col justify-between'>
@@ -44,7 +59,7 @@ function Settings({ setSettingsOpen }) {
 				</form>
 				<h6>Or</h6>
 				<button
-					onClick={() => findByGeoLocation(unit)}
+					onClick={openCurrentLocation}
 					className='inline-flex bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg mt-2 mb-5 shadow'>
 					<svg
 						xmlns='http://www.w3.org/2000/svg'

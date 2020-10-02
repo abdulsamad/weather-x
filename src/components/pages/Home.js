@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 import Settings from './Settings';
 import * as background from '../utils/background-images';
 
-function Home() {
+function Home({ history }) {
 	const {
 		place,
 		timeFormat,
@@ -249,7 +249,7 @@ function Home() {
 			<animated.div
 				className='settings h-screen w-screen absolute top-0 left-0 bottom-0 right-0 p-5 text-center text-white z-20 overflow-auto'
 				style={slideUp}>
-				<Settings setSettingsOpen={setSettingsOpen} />
+				<Settings setSettingsOpen={setSettingsOpen} history={history} />
 			</animated.div>
 		</>
 	);
