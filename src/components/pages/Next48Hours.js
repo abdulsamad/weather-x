@@ -35,8 +35,10 @@ function Next48Hours() {
 	const { city } = useParams();
 
 	useEffect(() => {
-		place !== city && findByName(city, unit);
-		setPlace(city);
+		if (place !== city) {
+			findByName(city, unit);
+			setPlace(city);
+		}
 
 		setTrail({});
 		// eslint-disable-next-line

@@ -29,9 +29,10 @@ function Next7Days() {
 	const { city } = useParams();
 
 	useEffect(() => {
-		place !== city && findByName(city, unit);
-		setPlace(city);
-
+		if (place !== city) {
+			findByName(city, unit);
+			setPlace(city);
+		}
 		setTrail({});
 		// eslint-disable-next-line
 	}, []);

@@ -33,8 +33,10 @@ function WeeklyStats() {
 	const { city } = useParams();
 
 	useEffect(() => {
-		place !== city && findByName(city, unit);
-		setPlace(city);
+		if (place !== city) {
+			findByName(city, unit);
+			setPlace(city);
+		}
 
 		// eslint-disable-next-line
 	}, []);
