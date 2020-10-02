@@ -1,13 +1,6 @@
-/* App Component */
-
-.App {
-	height: 10px;
-	-ms-scroll-snap-type: x mandatory;
-	scroll-snap-type: x mandatory;
-}
-
-.page {
-	scroll-snap-align: center;
+body {
+	min-height: 100vh;
+	min-height: -webkit-fill-available;
 }
 
 /* Home Component */
