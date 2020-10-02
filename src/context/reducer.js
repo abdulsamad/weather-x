@@ -8,16 +8,16 @@ export default (state, action) => {
 				loading: action.payload,
 			};
 
-		case types.SET_CURRENT:
-			return {
-				...state,
-				current: action.payload,
-			};
-
 		case types.SET_PLACE:
 			return {
 				...state,
 				place: action.payload,
+			};
+
+		case types.SET_CURRENT:
+			return {
+				...state,
+				current: action.payload,
 			};
 
 		case types.SET_UNIT:

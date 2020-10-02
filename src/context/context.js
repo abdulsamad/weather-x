@@ -1,10 +1,4 @@
-import React, {
-	createContext,
-	useContext,
-	useReducer,
-	useEffect,
-	useRef,
-} from 'react';
+import React, { createContext, useContext, useReducer } from 'react';
 import Reducer from './reducer';
 import * as types from './types';
 import axios from 'axios';
@@ -14,112 +8,18 @@ const AppContextDispatch = createContext();
 
 function AppContextProvider({ children }) {
 	const initialState = {
-		loading: true,
 		place: null,
+		loading: true,
 		current: {},
 		next48Hours: [],
 		next7Days: [],
-		unit: 'metric',
-		timeFormat: 24,
+		unit: localStorage.getItem('unit') || 'metric',
+		timeFormat: parseInt(localStorage.getItem('timeFormat')) || 24,
 		alert: null,
-		downloadBackground: false,
+		downloadBackground: JSON.parse(localStorage.getItem('downloadBackground')),
 	};
 
 	const [state, dispatch] = useReducer(Reducer, initialState);
-	const settingsStr = useRef(localStorage.getItem('settings'));
-
-	// Loading default settings
-	useEffect(() => {
-		if (settingsStr.current) {
-			const parsedSettings = JSON.parse(settingsStr.current);
-
-			parsedSettings.unit &&
-				dispatch({
-					type: types.SET_UNIT,
-					payload: parsedSettings.unit,
-				});
-
-			parsedSettings.timeFormat &&
-				dispatch({
-					type: types.SET_TIME_FORMAT,
-					payload: parsedSettings.timeFormat,
-				});
-
-			parsedSettings.downloadBackground &&
-				dispatch({
-					type: types.SET_BG_DOWNLOAD_ON_LOAD,
-					payload: parsedSettings.downloadBackground,
-				});
-		}
-	}, [settingsStr]);
-
-	// Fetching data
-	useEffect(() => {
-		state.place
-			? findByName(state.place, state.unit)
-			: findByGeoLocation(state.unit);
-
-		dispatch({
-			type: types.SET_LOADING,
-			payload: false,
-		});
-
-		// eslint-disable-next-line
-	}, [state.unit]);
-
-	const findByGeoLocation = (unit) => {
-		navigator.geolocation.getCurrentPosition(
-			async ({ coords: { latitude: lat, longitude: lon }, timestamp }) => {
-				// OpenWeather API (OneCall)
-				const onecall = await axios.get(
-					'https://api.openweathermap.org/data/2.5/onecall',
-					{
-						params: {
-							appid: process.env.REACT_APP_OPEN_WEATHER_API_KEY,
-							exclude: 'minutely',
-							lat,
-							lon,
-							units: unit,
-						},
-					},
-				);
-
-				const { current, daily, hourly } = await onecall.data;
-
-				dispatch({
-					type: types.SET_CURRENT,
-					payload: current,
-				});
-
-				dispatch({
-					type: types.SET_NEXT_48_HOURS,
-					payload: hourly,
-				});
-
-				dispatch({
-					type: types.SET_NEXT_7_DAYS,
-					payload: daily,
-				});
-
-				// Reverse geocoding the return lat and lon
-				const { city, state_district, state, country } = await reverseGeocode(
-					lat,
-					lon,
-				);
-
-				dispatch({
-					type: types.SET_PLACE,
-					payload: city || state_district || state || country,
-				});
-			},
-			(err) => {
-				setAlert({
-					type: 'error',
-					message: err,
-				});
-			},
-		);
-	};
 
 	const findByName = async (place, unit) => {
 		// Geocode the entered place
@@ -157,9 +57,10 @@ function AppContextProvider({ children }) {
 			payload: daily,
 		});
 
+		// Stop Loading
 		dispatch({
-			type: types.SET_PLACE,
-			payload: place,
+			type: types.SET_LOADING,
+			payload: false,
 		});
 	};
 
@@ -189,44 +90,10 @@ function AppContextProvider({ children }) {
 		return await call.data.address;
 	};
 
-	const setPlace = (place) =>
+	const setPlace = (city) => {
 		dispatch({
 			type: types.SET_PLACE,
-			payload: place,
-		});
-
-	const setTimeFormat = (timeFormat) => {
-		if (settingsStr.current) {
-			localStorage.setItem(
-				'settings',
-				JSON.stringify({
-					...JSON.parse(settingsStr.current),
-					timeFormat,
-				}),
-			);
-		} else {
-			localStorage.setItem('settings', JSON.stringify({ timeFormat }));
-		}
-
-		dispatch({
-			type: types.SET_TIME_FORMAT,
-			payload: timeFormat,
-		});
-	};
-
-	const setUnit = (unit) => {
-		if (settingsStr.current) {
-			localStorage.setItem(
-				'settings',
-				JSON.stringify({ ...JSON.parse(settingsStr.current), unit }),
-			);
-		} else {
-			localStorage.setItem('settings', JSON.stringify({ unit }));
-		}
-
-		dispatch({
-			type: types.SET_UNIT,
-			payload: unit,
+			payload: city,
 		});
 	};
 
@@ -239,23 +106,32 @@ function AppContextProvider({ children }) {
 		setTimeout(removeAlert, 3000);
 	};
 
-	const removeAlert = () =>
+	const removeAlert = () => {
 		dispatch({
 			type: types.REMOVE_ALERT,
 		});
+	};
+
+	const setTimeFormat = (timeFormat) => {
+		localStorage.setItem('timeFormat', timeFormat);
+
+		dispatch({
+			type: types.SET_TIME_FORMAT,
+			payload: timeFormat,
+		});
+	};
+
+	const setUnit = (unit) => {
+		localStorage.setItem('unit', unit);
+
+		dispatch({
+			type: types.SET_UNIT,
+			payload: unit,
+		});
+	};
 
 	const setDownloadBackgroundOnLoad = (downloadBackground) => {
-		if (settingsStr.current) {
-			localStorage.setItem(
-				'settings',
-				JSON.stringify({
-					...JSON.parse(settingsStr.current),
-					downloadBackground,
-				}),
-			);
-		} else {
-			localStorage.setItem('settings', JSON.stringify({ downloadBackground }));
-		}
+		localStorage.setItem('downloadBackground', downloadBackground);
 
 		dispatch({
 			type: types.SET_BG_DOWNLOAD_ON_LOAD,
@@ -266,7 +142,6 @@ function AppContextProvider({ children }) {
 	return (
 		<AppContext.Provider
 			value={{
-				place: state.place,
 				current: state.current,
 				next48Hours: state.next48Hours,
 				next7Days: state.next7Days,
@@ -275,15 +150,17 @@ function AppContextProvider({ children }) {
 				alert: state.alert,
 				downloadBackground: state.downloadBackground,
 				loading: state.loading,
+				place: state.place,
 			}}>
 			<AppContextDispatch.Provider
 				value={{
-					setPlace,
 					setUnit,
 					setTimeFormat,
 					setAlert,
+					setPlace,
 					removeAlert,
-					findByGeoLocation,
+					geocode,
+					reverseGeocode,
 					findByName,
 					setDownloadBackgroundOnLoad,
 				}}>
