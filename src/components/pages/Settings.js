@@ -13,8 +13,8 @@ function Settings({ setSettingsOpen, history }) {
 		setUnit,
 		setTimeFormat,
 		findByName,
-		setDownloadBackgroundOnLoad,
 		reverseGeocode,
+		setDownloadBackgroundOnLoad,
 	} = useAppContextDispatch();
 	const [cityInpVal, setCityInpVal] = useState('');
 
@@ -35,6 +35,7 @@ function Settings({ setSettingsOpen, history }) {
 			({ coords: { latitude: lat, longitude: lon }, timestamp }) => {
 				reverseGeocode(lat, lon).then(
 					({ city, state_district, state, country }) => {
+						findByName(`/${city || state_district || state || country}`, unit);
 						history.push(`/${city || state_district || state || country}`);
 					},
 				);
