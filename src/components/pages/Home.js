@@ -4,7 +4,7 @@ import {
 	useAppContextState,
 	useAppContextDispatch,
 } from '../../context/context';
-import { useSpring, animated } from 'react-spring';
+import { useSpring, useTransition, animated } from 'react-spring';
 import dayjs from 'dayjs';
 import Settings from './Settings';
 import * as background from '../utils/background-images';
@@ -39,9 +39,10 @@ function Home() {
 	const { findByName, setPlace } = useAppContextDispatch();
 	const [settingsOpen, setSettingsOpen] = useState(false);
 	const [showMore, setShowMore] = useState(false);
-	const showMoreAnimation = useSpring({
-		opacity: showMore ? 1 : 0,
-		display: showMore ? '' : 'none',
+	const showMoreAnimation = useTransition(showMore, null, {
+		from: { opacity: 0 },
+		enter: { opacity: 1 },
+		leave: { opacity: 0 },
 	});
 	const [slideDown, slideDownSet] = useSpring(() => ({
 		from: { opacity: 0, transform: 'translate3d(0, -20%, 0)' },
@@ -58,6 +59,7 @@ function Home() {
 		transform: settingsOpen ? 'translateY(0)' : 'translateY(100vh)',
 	});
 	const [backgroundImage, setBackgroundImage] = useState(background['drizzle']);
+
 	const { city } = useParams();
 
 	useEffect(() => {
@@ -135,7 +137,7 @@ function Home() {
 				</animated.section>
 
 				<section className='mb-5 z-10'>
-					<table className='table'>
+					<table className='table transition-all duration-500 ease-in-out'>
 						<animated.tbody style={fadeDown}>
 							<tr>
 								<td className='px-2'>Humidity</td>
@@ -162,60 +164,63 @@ function Home() {
 								<td className='px-2'>{uvi}</td>
 							</tr>
 						</animated.tbody>
-						<animated.tbody
-							style={showMoreAnimation}
-							className='transition-all origin-bottom'>
-							<tr>
-								<td className='px-2'>Wind Speed</td>
-								<td className='px-2'>
-									{unit === 'imperial'
-										? wind_speed + ' mi/hr'
-										: wind_speed + ' m/s'}
-								</td>
-							</tr>
-							{wind_gust && (
-								<tr>
-									<td className='px-2'>Wind Gust</td>
-									<td className='px-2'>
-										{unit === 'imperial'
-											? wind_gust + ' mi/hr'
-											: wind_gust + ' m/s'}
-									</td>
-								</tr>
-							)}
-							<tr>
-								<td className='px-2'>Wind Direction</td>
-								<td className='px-2'>{wind_deg}&deg;</td>
-							</tr>
-							{rain && (
-								<tr>
-									<td className='px-2'>Rain (1h)</td>
-									<td className='px-2'>{rain['1h']} mm</td>
-								</tr>
-							)}
-							{snow && (
-								<tr>
-									<td className='px-2'>Snow (1h)</td>
-									<td className='px-2'>{snow['1h']} mm</td>
-								</tr>
-							)}
-							<tr>
-								<td className='px-2'>Sunrise</td>
-								<td className='px-2'>
-									{timeFormat === 12
-										? dayjs(sunrise * 1000).format('hh:mm A')
-										: dayjs(sunrise * 1000).format('HH:mm')}
-								</td>
-							</tr>
-							<tr>
-								<td className='px-2'>Sunset</td>
-								<td className='px-2'>
-									{timeFormat === 12
-										? dayjs(sunset * 1000).format('hh:mm A')
-										: dayjs(sunset * 1000).format('HH:mm')}
-								</td>
-							</tr>
-						</animated.tbody>
+						{showMoreAnimation.map(
+							({ item, key, props }) =>
+								item && (
+									<animated.tbody key={key} style={props}>
+										<tr>
+											<td className='px-2'>Wind Speed</td>
+											<td className='px-2'>
+												{unit === 'imperial'
+													? wind_speed + ' mi/hr'
+													: wind_speed + ' m/s'}
+											</td>
+										</tr>
+										{wind_gust && (
+											<tr>
+												<td className='px-2'>Wind Gust</td>
+												<td className='px-2'>
+													{unit === 'imperial'
+														? wind_gust + ' mi/hr'
+														: wind_gust + ' m/s'}
+												</td>
+											</tr>
+										)}
+										<tr>
+											<td className='px-2'>Wind Direction</td>
+											<td className='px-2'>{wind_deg}&deg;</td>
+										</tr>
+										{rain && (
+											<tr>
+												<td className='px-2'>Rain (1h)</td>
+												<td className='px-2'>{rain['1h']} mm</td>
+											</tr>
+										)}
+										{snow && (
+											<tr>
+												<td className='px-2'>Snow (1h)</td>
+												<td className='px-2'>{snow['1h']} mm</td>
+											</tr>
+										)}
+										<tr>
+											<td className='px-2'>Sunrise</td>
+											<td className='px-2'>
+												{timeFormat === 12
+													? dayjs(sunrise * 1000).format('hh:mm A')
+													: dayjs(sunrise * 1000).format('HH:mm')}
+											</td>
+										</tr>
+										<tr>
+											<td className='px-2'>Sunset</td>
+											<td className='px-2'>
+												{timeFormat === 12
+													? dayjs(sunset * 1000).format('hh:mm A')
+													: dayjs(sunset * 1000).format('HH:mm')}
+											</td>
+										</tr>
+									</animated.tbody>
+								),
+						)}
 					</table>
 					<button
 						className='flex items-center px-2 my-2 focus:outline-none'
