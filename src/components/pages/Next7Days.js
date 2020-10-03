@@ -99,7 +99,7 @@ function Next7Days() {
 							</div>
 							<div className='flex my-2'>
 								<div className='w-1/2'>
-									<div>
+									<div className='truncate'>
 										<strong className='semibold'>Pressure: </strong>
 										{pressure} mbar
 									</div>
