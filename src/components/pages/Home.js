@@ -52,14 +52,15 @@ function Home({ history }) {
 		from: { opacity: 0 },
 		to: { opacity: 1 },
 	}));
-	const slideUp = useSpring({
+	const slideUpAnimation = useTransition(settingsOpen, null, {
+		from: { opacity: 0, transform: 'translateY(100px)' },
+		enter: { opacity: 1, transform: 'translateY(0)' },
+		leave: { opacity: 0, transform: 'translateY(100px)' },
 		config: {
 			tension: 200,
 		},
-		transform: settingsOpen ? 'translateY(0)' : 'translateY(100vh)',
 	});
 	const [backgroundImage, setBackgroundImage] = useState(background['drizzle']);
-
 	const { city } = useParams();
 
 	useEffect(() => {
@@ -246,11 +247,17 @@ function Home({ history }) {
 			</div>
 
 			{/* Settings */}
-			<animated.div
-				className='settings h-screen w-screen absolute top-0 left-0 bottom-0 right-0 p-5 text-center text-white z-20 overflow-auto'
-				style={slideUp}>
-				<Settings setSettingsOpen={setSettingsOpen} history={history} />
-			</animated.div>
+			{slideUpAnimation.map(
+				({ item, key, props }) =>
+					item && (
+						<animated.div
+							key={key}
+							style={props}
+							className='settings h-screen w-screen absolute top-0 left-0 bottom-0 right-0 p-5 text-center text-white z-20 overflow-auto'>
+							<Settings setSettingsOpen={setSettingsOpen} history={history} />
+						</animated.div>
+					),
+			)}
 		</>
 	);
 }
