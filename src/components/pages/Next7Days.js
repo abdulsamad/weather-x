@@ -115,7 +115,9 @@ function Next7Days() {
 									</div>
 									<div>
 										<strong className='semibold'>Wind: </strong>
-										{wind_speed} m/s
+										{unit === 'imperial'
+											? wind_speed + ' mi/hr'
+											: wind_speed + ' m/s'}
 									</div>
 								</div>
 							</div>
