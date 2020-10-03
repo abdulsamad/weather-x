@@ -26,11 +26,11 @@ function Next48Hours() {
 		},
 		from: {
 			opacity: 0,
-			transform: 'scaleY(0.8)',
+			transform: 'translateY(8px)',
 		},
 		to: {
 			opacity: 1,
-			transform: 'scaleY(1)',
+			transform: 'translateY(0)',
 		},
 	}));
 	const { city } = useParams();
