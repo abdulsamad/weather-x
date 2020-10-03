@@ -15,6 +15,7 @@ function Next48Hours() {
 		timeFormat,
 		loading,
 		place,
+		alert,
 	} = useAppContextState();
 	const { findByName, setPlace } = useAppContextDispatch();
 	const [trail, setTrail] = useTrail(next48Hours.length, () => ({
@@ -44,7 +45,7 @@ function Next48Hours() {
 		// eslint-disable-next-line
 	}, []);
 
-	if (loading) {
+	if (loading || alert) {
 		return (
 			<div
 				className=' w-screen flex justify-center items-center'

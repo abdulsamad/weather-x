@@ -11,6 +11,7 @@ import * as background from '../utils/background-images';
 
 function Home({ history }) {
 	const {
+		alert,
 		place,
 		timeFormat,
 		unit,
@@ -89,7 +90,7 @@ function Home({ history }) {
 		// eslint-disable-next-line
 	}, [weather, downloadBackground]);
 
-	if (loading) {
+	if (loading || alert) {
 		return (
 			<div
 				className=' w-screen flex justify-center items-center'

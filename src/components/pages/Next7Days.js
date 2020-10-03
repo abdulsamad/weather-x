@@ -9,7 +9,7 @@ import * as icons from '../utils/weather-icons';
 import { useTrail, animated } from 'react-spring';
 
 function Next7Days() {
-	const { next7Days, loading, place, unit } = useAppContextState();
+	const { next7Days, loading, place, unit, alert } = useAppContextState();
 	const { setPlace, findByName } = useAppContextDispatch();
 	const [trail, setTrail] = useTrail(next7Days.length, () => ({
 		config: {
@@ -37,7 +37,7 @@ function Next7Days() {
 		// eslint-disable-next-line
 	}, []);
 
-	if (loading) {
+	if (loading || alert) {
 		return (
 			<div
 				className=' w-screen flex justify-center items-center'

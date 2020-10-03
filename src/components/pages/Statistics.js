@@ -28,6 +28,7 @@ function WeeklyStats() {
 		loading,
 		place,
 		unit,
+		alert,
 	} = useAppContextState();
 	const { findByName, setPlace } = useAppContextDispatch();
 	const { city } = useParams();
@@ -76,7 +77,7 @@ function WeeklyStats() {
 		};
 	});
 
-	if (loading) {
+	if (loading || alert) {
 		return (
 			<div
 				className=' w-screen flex justify-center items-center'

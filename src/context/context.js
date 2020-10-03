@@ -22,40 +22,51 @@ function AppContextProvider({ children }) {
 	const [state, dispatch] = useReducer(Reducer, initialState);
 
 	const findByName = async (place, unit) => {
-		// Geocode the entered place
-		const geocodesArr = await geocode(place);
-		const { lat, lon } = geocodesArr[0];
+		try {
+			// Geocode the entered place
+			const geocodesArr = await geocode(place);
+			const { lat, lon } = geocodesArr[0];
 
-		// OpenWeather API (OneCall)
-		const onecall = await axios.get(
-			'https://api.openweathermap.org/data/2.5/onecall',
-			{
-				params: {
-					appid: process.env.REACT_APP_OPEN_WEATHER_API_KEY,
-					lat: lat,
-					lon: lon,
-					exclude: 'minutely',
-					units: unit,
+			// OpenWeather API (OneCall)
+			const onecall = await axios.get(
+				'https://api.openweathermap.org/data/2.5/onecall',
+				{
+					params: {
+						appid: process.env.REACT_APP_OPEN_WEATHER_API_KEY,
+						lat: lat,
+						lon: lon,
+						exclude: 'minutely',
+						units: unit,
+					},
 				},
-			},
-		);
+			);
 
-		const { current, daily, hourly } = onecall.data;
+			const { current, daily, hourly } = onecall.data;
 
-		dispatch({
-			type: types.SET_CURRENT,
-			payload: current,
-		});
+			dispatch({
+				type: types.SET_CURRENT,
+				payload: current,
+			});
 
-		dispatch({
-			type: types.SET_NEXT_48_HOURS,
-			payload: hourly,
-		});
+			dispatch({
+				type: types.SET_NEXT_48_HOURS,
+				payload: hourly,
+			});
 
-		dispatch({
-			type: types.SET_NEXT_7_DAYS,
-			payload: daily,
-		});
+			dispatch({
+				type: types.SET_NEXT_7_DAYS,
+				payload: daily,
+			});
+		} catch (err) {
+			setAlert({
+				type: 'danger',
+				message: `Sorry! Location not found! You'll be redirected in few seconds.`,
+			});
+			setTimeout(
+				() => (window.location = 'https://weatherx-abdulsamad.netlify.app/'),
+				3000,
+			);
+		}
 
 		// Stop Loading
 		dispatch({
