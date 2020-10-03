@@ -125,7 +125,7 @@ function Home({ history }) {
 
 			{/* Home */}
 			<div
-				className='w-screen flex flex-col justify-between p-5 text-white home bg-no-repeat bg-cover bg-center'
+				className='w-screen flex flex-col justify-between p-5 text-white home bg-no-repeat bg-cover bg-center overflow-auto'
 				style={{
 					height: 'calc(100vh - 60px)',
 					backgroundImage: weather && `url('${backgroundImage}')`,
