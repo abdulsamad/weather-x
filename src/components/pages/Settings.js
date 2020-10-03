@@ -53,14 +53,17 @@ function Settings({ setSettingsOpen, history }) {
 		<div className='container h-full mx-auto flex flex-col justify-between'>
 			<div>
 				<h1 className='text-lg font-bold mt-5'>Settings</h1>
-				<form onSubmit={onSubmit}>
+				<form className='text-left mt-5 mb-2' onSubmit={onSubmit}>
+					<label className='block text-sm font-bold mb-2' htmlFor='cityName'>
+						Enter City Name
+					</label>
 					<input
 						type='text'
 						ref={cityInp}
 						onChange={(ev) => setCityInpVal(ev.target.value)}
 						value={cityInpVal}
-						className='bg-white shadow focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full text-black appearance-none leading-normal mt-5 mb-2'
-						placeholder='Enter city name'
+						className='bg-white shadow focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full text-black appearance-none leading-normal'
+						placeholder='For E.g: New York'
 					/>
 				</form>
 				<h6>Or</h6>

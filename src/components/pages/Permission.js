@@ -67,7 +67,9 @@ function Permission({ history }) {
 					</button>
 				</div>
 				<p className='text-xl my-3'>or</p>
-				<form className='text-' onSubmit={() => history.push(`/${cityInpVal}`)}>
+				<form
+					className='text-left'
+					onSubmit={() => history.push(`/${cityInpVal}`)}>
 					<label className='block text-sm font-bold mb-2' htmlFor='cityName'>
 						Enter City Name
 					</label>
