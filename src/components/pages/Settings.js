@@ -66,7 +66,7 @@ function Settings({ setSettingsOpen, history }) {
 				<h6>Or</h6>
 				<button
 					onClick={openCurrentLocation}
-					className='inline-flex bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg mt-2 mb-5 shadow'>
+					className='inline-flex bg-blue-500 hover:bg-blue-700 text-gray-900 font-semibold py-2 px-4 rounded-lg mt-2 mb-5 shadow'>
 					<svg
 						xmlns='http://www.w3.org/2000/svg'
 						width='24'
@@ -84,9 +84,9 @@ function Settings({ setSettingsOpen, history }) {
 							onClick={changeUnit('metric')}
 							className={`${
 								unit === 'metric'
-									? 'bg-blue-500 hover:bg-blue-700 text-white'
-									: 'bg-gray-300 text-gray-800'
-							} hover:bg-blue-400 hover:text-white font-semibold py-2 px-4 rounded-l-lg`}>
+									? 'bg-blue-500 hover:bg-blue-700'
+									: 'bg-gray-300'
+							} text-gray-900 hover:bg-blue-400 hover:text-white font-semibold py-2 px-4 rounded-l-lg`}>
 							<div>Metric</div>
 							<small>&deg;C, m/s</small>
 						</button>
@@ -94,19 +94,19 @@ function Settings({ setSettingsOpen, history }) {
 							onClick={changeUnit('imperial')}
 							className={`${
 								unit === 'imperial'
-									? 'bg-blue-500 hover:bg-blue-700 text-white'
-									: 'bg-gray-300 text-gray-800'
-							} hover:bg-blue-400 hover:text-white font-semibold py-2 px-4 border-solid border-l-2 border-r-2 border-gray-400`}>
+									? 'bg-blue-500 hover:bg-blue-700'
+									: 'bg-gray-300'
+							} text-gray-900 hover:bg-blue-400 hover:text-white font-semibold py-2 px-4 border-solid border-l-2 border-r-2 border-gray-400`}>
 							<div>Imperial</div>
 							<small>&deg;F, mi/hr</small>
 						</button>
 						<button
 							onClick={changeUnit(null)}
 							className={`${
-								unit === null
-									? 'bg-blue-500 hover:bg-blue-700 text-white'
-									: 'bg-gray-300 text-gray-800'
-							} hover:bg-blue-400 hover:text-white font-semibold py-2 px-4 rounded-r-lg`}>
+								unit !== 'metric' && unit !== 'imperial'
+									? 'bg-blue-500 hover:bg-blue-700'
+									: 'bg-gray-300'
+							} text-gray-900 hover:bg-blue-400 hover:text-white font-semibold py-2 px-4 rounded-r-lg`}>
 							<div>Standard</div>
 							<small>&deg;K, m/s</small>
 						</button>
@@ -119,18 +119,18 @@ function Settings({ setSettingsOpen, history }) {
 							onClick={changeTimeFormat(24)}
 							className={`${
 								timeFormat === 24
-									? 'bg-blue-500 hover:bg-blue-700 text-white'
-									: 'bg-gray-300 text-gray-800'
-							} hover:bg-blue-400 hover:text-white font-semibold py-2 px-4 rounded-l-lg`}>
+									? 'bg-blue-500 hover:bg-blue-700'
+									: 'bg-gray-300'
+							} text-gray-900 hover:bg-blue-400 hover:text-white font-semibold py-2 px-4 rounded-l-lg`}>
 							<span>24h</span>
 						</button>
 						<button
 							onClick={changeTimeFormat(12)}
 							className={`${
 								timeFormat === 12
-									? 'bg-blue-500 hover:bg-blue-700 text-white'
-									: 'bg-gray-300 text-gray-800'
-							} hover:bg-blue-400 hover:text-white font-semibold py-2 px-4 rounded-r-lg`}>
+									? 'bg-blue-500 hover:bg-blue-700'
+									: 'bg-gray-300'
+							} text-gray-900 hover:bg-blue-400 hover:text-white font-semibold py-2 px-4 rounded-r-lg`}>
 							<span>12h</span>
 						</button>
 					</div>
@@ -146,8 +146,8 @@ function Settings({ setSettingsOpen, history }) {
 					<label htmlFor='downloadImageCheckbox'>
 						Always download new background image.
 						<div className='text-red-500 text-xs italic'>
-							<strong>Note:</strong> This may increase initial load time
-							depending upon the internet connection.
+							Note: This may increase initial load time depending upon the
+							internet connection.
 						</div>
 					</label>
 				</div>
