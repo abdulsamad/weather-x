@@ -8,7 +8,7 @@ import openWeatherBrandLogo from '../../assets/openweather_logo.png';
 import unsplashBrandLogo from '../../assets/unsplash_logo.png';
 
 function Settings({ setSettingsOpen, history }) {
-	const { unit, timeFormat, downloadBackground } = useAppContextState();
+	const { unit, timeFormat, downloadBackground, place } = useAppContextState();
 	const {
 		setUnit,
 		setPlace,
@@ -30,7 +30,10 @@ function Settings({ setSettingsOpen, history }) {
 		cityInp.current.blur();
 	};
 
-	const changeUnit = (unit) => (ev) => setUnit(unit);
+	const changeUnit = (unit) => (ev) => {
+		setUnit(unit);
+		findByName(place, unit);
+	};
 
 	const changeTimeFormat = (format) => (ev) => setTimeFormat(format);
 
