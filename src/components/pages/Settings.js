@@ -170,20 +170,20 @@ function Settings({ setSettingsOpen, history }) {
 						www.flaticon.com
 					</a>
 				</p>
-				<p className='text-center'>
+				<p className='my-2 text-center'>
 					<sub className='font-semibold'>Powered by</sub>
 					<img
-						style={{ width: 180 }}
-						className='mx-auto'
+						style={{ width: 120 }}
+						className='mx-auto mt-1'
 						src={openWeatherBrandLogo}
 						alt='openweather brand logo'
 					/>
 				</p>
-				<p className='text-center'>
+				<p className='my-2 text-center'>
 					<sub className='font-semibold'>Images by</sub>
 					<img
-						style={{ width: 180 }}
-						className='mx-auto'
+						style={{ width: 120 }}
+						className='mx-auto mt-1'
 						src={unsplashBrandLogo}
 						alt='unsplash brand logo'
 					/>
