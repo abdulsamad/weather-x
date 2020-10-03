@@ -63,8 +63,8 @@ function AppContextProvider({ children }) {
 				message: `Sorry! Location not found! You'll be redirected in few seconds.`,
 			});
 			setTimeout(
-				() => (window.location = 'https://weatherx-abdulsamad.netlify.app/'),
-				3000,
+				() => (window.location = process.env.REACT_APP_PROJECT_URL),
+				4800,
 			);
 		}
 
@@ -114,7 +114,7 @@ function AppContextProvider({ children }) {
 			payload: { type, message },
 		});
 
-		setTimeout(removeAlert, 3000);
+		setTimeout(removeAlert, 5000);
 	};
 
 	const removeAlert = () => {
