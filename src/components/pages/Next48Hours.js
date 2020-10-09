@@ -48,7 +48,7 @@ function Next48Hours() {
 			style={{
 				height: 'calc(100vh - 60px)',
 			}}>
-			<div className='vertical-scroll h-full w-full overflow-auto container mx-auto'>
+			<div className='vertical-scroll h-full w-full overflow-auto container md:px-2 mx-auto'>
 				<h2 className='text-center font-bold my-5 text-lg'>Next 48h</h2>
 				{next48Hours &&
 					next48Hours.map(

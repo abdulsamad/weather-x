@@ -55,7 +55,7 @@ function Next7Days() {
 			style={{
 				height: 'calc(100vh - 60px)',
 			}}>
-			<div className='vertical-scroll h-full w-full overflow-auto container mx-auto'>
+			<div className='vertical-scroll h-full w-full overflow-auto container md:px-2 mx-auto'>
 				<h2 className='text-center font-bold text-lg my-5'>Next 7 days</h2>
 				{next7Days.map(
 					(
