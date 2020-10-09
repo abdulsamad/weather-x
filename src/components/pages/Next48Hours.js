@@ -6,7 +6,8 @@ import {
 } from '../../context/context';
 import dayjs from 'dayjs';
 import * as icons from '../utils/weather-icons';
-import { useTrail, animated } from 'react-spring';
+import { Spring } from 'react-spring/renderprops';
+import { InView } from 'react-intersection-observer';
 
 function Next48Hours() {
 	const {
@@ -18,21 +19,6 @@ function Next48Hours() {
 		alert,
 	} = useAppContextState();
 	const { findByName, setPlace } = useAppContextDispatch();
-	const [trail, setTrail] = useTrail(next48Hours.length, () => ({
-		config: {
-			mass: 1,
-			tension: 120,
-			friction: 14,
-		},
-		from: {
-			opacity: 0,
-			transform: 'translateY(8px)',
-		},
-		to: {
-			opacity: 1,
-			transform: 'translateY(0)',
-		},
-	}));
 	const { city } = useParams();
 
 	useEffect(() => {
@@ -41,7 +27,6 @@ function Next48Hours() {
 			setPlace(city);
 		}
 
-		setTrail({});
 		// eslint-disable-next-line
 	}, []);
 
@@ -85,48 +70,70 @@ function Next48Hours() {
 										</span>
 									</h3>
 								)}
-								<animated.div style={trail[index]}>
-									<div className='flex bg-gray-100 bg-opacity-25 rounded-lg p-2 my-2'>
-										<div className='w-1/2 flex flex-col items-start my-1'>
-											<span className='font-semibold h-8 flex items-center text-xl'>
-												{timeFormat === 12
-													? dayjs(dt * 1000).format('hh:mm A')
-													: dayjs(dt * 1000).format('HH:mm')}
-											</span>
-											<span className='text-lg capitalize'>
-												{weather[0].description}
-											</span>
+								<InView triggerOnce>
+									{({ inView, ref, entry }) => (
+										<div ref={ref}>
+											<Spring
+												delay={300}
+												config={{
+													mass: 1,
+													tension: 120,
+													friction: 14,
+												}}
+												to={{
+													opacity: inView ? 1 : 0,
+													transform: inView
+														? 'translateY(0)'
+														: 'translateY(10px)',
+												}}>
+												{(props) => (
+													<div
+														style={props}
+														className='flex bg-gray-100 bg-opacity-25 rounded-lg p-2 my-2'>
+														<div className='w-1/2 flex flex-col items-start my-1'>
+															<span className='font-semibold h-8 flex items-center text-xl'>
+																{timeFormat === 12
+																	? dayjs(dt * 1000).format('hh:mm A')
+																	: dayjs(dt * 1000).format('HH:mm')}
+															</span>
+															<span className='text-lg capitalize'>
+																{weather[0].description}
+															</span>
+														</div>
+														<div className='w-1/4 flex flex-col items-center text-center my-1 text-lg'>
+															<div className='h-8'>
+																<svg
+																	xmlns='http://www.w3.org/2000/svg'
+																	width='24'
+																	height='24'
+																	viewBox='0 0 24 24'
+																	className='w-6 h-6 fill-current'
+																	style={{
+																		transform: `rotateZ(${wind_deg}deg)`,
+																	}}>
+																	<path d='M24 0l-6 22-8.129-7.239 7.802-8.234-10.458 7.227-7.215-1.754 24-12zm-15 16.668v7.332l3.258-4.431-3.258-2.901z' />
+																</svg>
+															</div>
+															<span className='truncate'>
+																{unit === 'imperial'
+																	? wind_speed + ' mi/hr'
+																	: wind_speed + ' m/s'}
+															</span>
+														</div>
+														<div className='w-1/4 flex flex-col items-center my-1 text-lg'>
+															<span className=''>{temp}&deg;</span>
+															<img
+																src={icons['_' + weather[0].icon]}
+																className='h-8 transform scale-150'
+																alt='weather icon'
+															/>
+														</div>
+													</div>
+												)}
+											</Spring>
 										</div>
-										<div className='w-1/4 flex flex-col items-center text-center my-1 text-lg'>
-											<div className='h-8'>
-												<svg
-													xmlns='http://www.w3.org/2000/svg'
-													width='24'
-													height='24'
-													viewBox='0 0 24 24'
-													className='w-6 h-6 fill-current'
-													style={{
-														transform: `rotateZ(${wind_deg}deg)`,
-													}}>
-													<path d='M24 0l-6 22-8.129-7.239 7.802-8.234-10.458 7.227-7.215-1.754 24-12zm-15 16.668v7.332l3.258-4.431-3.258-2.901z' />
-												</svg>
-											</div>
-											<span className='truncate'>
-												{unit === 'imperial'
-													? wind_speed + ' mi/hr'
-													: wind_speed + ' m/s'}
-											</span>
-										</div>
-										<div className='w-1/4 flex flex-col items-center my-1 text-lg'>
-											<span className=''>{temp}&deg;</span>
-											<img
-												src={icons['_' + weather[0].icon]}
-												className='h-8 transform scale-150'
-												alt='weather icon'
-											/>
-										</div>
-									</div>
-								</animated.div>
+									)}
+								</InView>
 							</Fragment>
 						),
 					)}
