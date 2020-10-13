@@ -98,7 +98,7 @@ function WeeklyStats() {
 			<h2 className='uppercase text-center text-lg font-bold my-5'>
 				Temperature Next Week
 			</h2>
-			<div className='my-5 text-gray-900'>
+			<div className='my-5'>
 				<ResponsiveContainer height={200}>
 					<LineChart data={nextWeekTempData}>
 						<XAxis dataKey='time' />
@@ -113,7 +113,7 @@ function WeeklyStats() {
 			<h2 className='uppercase text-center text-lg font-bold my-5'>
 				Temperature Next 48 Hours
 			</h2>
-			<div className='overflow-x-auto my-5 text-gray-900'>
+			<div className='overflow-x-auto my-5'>
 				<AreaChart height={250} width={2800} data={next48HoursTempData}>
 					<defs>
 						<linearGradient id='temp' x1='0' y1='0' x2='0' y2='1'>
@@ -138,7 +138,7 @@ function WeeklyStats() {
 			<h2 className='uppercase text-center text-lg font-bold my-5'>
 				UV Index Next Week
 			</h2>
-			<div className='my-5 text-gray-900'>
+			<div className='my-5'>
 				<ResponsiveContainer height={200}>
 					<BarChart data={nextWeekUVIData}>
 						<XAxis dataKey='time' />
