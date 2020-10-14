@@ -16,11 +16,11 @@ function App() {
 				<Alert />
 				<div className='App relative h-screen w-screen overflow-hidden'>
 					<Switch>
-						<Route path='/' exact component={Permission} />
-						<Route path='/:city/Next48Hours' component={Next48Hours} />
-						<Route path='/:city/Next7Days' component={Next7Days} />
-						<Route path='/:city/Stats' component={Statistics} />
-						<Route path='/:city' component={Home} />
+						<Route path='/:city/Next48Hours' exact component={Next48Hours} />
+						<Route path='/:city/Next7Days' exact component={Next7Days} />
+						<Route path='/:city/Stats' exact component={Statistics} />
+						<Route path='/:city' exact component={Home} />
+						<Route component={Permission} />
 					</Switch>
 					<BottomNav />
 				</div>
