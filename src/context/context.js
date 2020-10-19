@@ -27,19 +27,15 @@ function AppContextProvider({ children }) {
 			const geocodesArr = await geocode(place);
 			const { lat, lon } = geocodesArr[0];
 
-			// OpenWeather API (OneCall)
-			const onecall = await axios.get(
-				'https://api.openweathermap.org/data/2.5/onecall',
-				{
-					params: {
-						appid: process.env.REACT_APP_OPEN_WEATHER_API_KEY,
-						lat: lat,
-						lon: lon,
-						exclude: 'minutely',
-						units: unit,
-					},
+			// OpenWeatherMap API call (API Key will be added in serverless function)
+			const onecall = await axios.get('/api/openweathermap/onecall', {
+				params: {
+					lat: lat,
+					lon: lon,
+					exclude: 'minutely',
+					units: unit,
 				},
-			);
+			});
 
 			const { current, daily, hourly } = onecall.data;
 
