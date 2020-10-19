@@ -28,7 +28,7 @@ function AppContextProvider({ children }) {
 			const { lat, lon } = geocodesArr[0];
 
 			// OpenWeatherMap API call (API Key will be added in serverless function)
-			const onecall = await axios.get('/api/openweathermap/onecall', {
+			const onecall = await axios.get('/api/onecall', {
 				params: {
 					lat: lat,
 					lon: lon,
