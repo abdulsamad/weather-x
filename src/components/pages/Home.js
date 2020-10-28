@@ -81,7 +81,7 @@ function Home({ history }) {
 		if (!weather) return;
 
 		// Set background image default or download new
-		downloadBackground
+		downloadBackground && navigator.onLine !== false
 			? setBackgroundImage(
 					`https://source.unsplash.com/${window.innerWidth}x${window.innerHeight}?${weather[0].main}`,
 			  )

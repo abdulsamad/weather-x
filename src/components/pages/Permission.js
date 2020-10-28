@@ -45,11 +45,12 @@ function Permission({ history }) {
 							your current location.
 						</h2>
 						<span className='text-red-500 text-sm'>
-							<strong>Note:</strong> Your location data is not stored in any way
-							(locally or remotely).
+							<strong>Note:</strong> Your location data is only stored locally
+							through LocalStorage.
 						</span>
 					</div>
 					<button
+						type='button'
 						onClick={openCurrentLocation}
 						className='inline-flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded-lg my-2  focus:outline-none'>
 						<svg

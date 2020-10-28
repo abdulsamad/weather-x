@@ -23,6 +23,13 @@ function AppContextProvider({ children }) {
 
 	const findByName = async (place, unit) => {
 		try {
+			// Check internet connection
+			if (navigator.onLine === false)
+				throw new Error(
+					`No Internet Connection! 😓
+					Please connect to internet to get the latest info.`,
+				);
+
 			// Geocode the entered place
 			const geocodesArr = await geocode(place);
 			const { lat, lon } = geocodesArr[0];
@@ -39,29 +46,61 @@ function AppContextProvider({ children }) {
 
 			const { current, daily, hourly } = onecall.data;
 
+			// Current
+			localStorage.setItem('current', JSON.stringify(current));
 			dispatch({
 				type: types.SET_CURRENT,
 				payload: current,
 			});
 
+			// Hourly
+			localStorage.setItem('hourly', JSON.stringify(hourly));
 			dispatch({
 				type: types.SET_NEXT_48_HOURS,
 				payload: hourly,
 			});
 
+			// Daily
+			localStorage.setItem('daily', JSON.stringify(daily));
 			dispatch({
 				type: types.SET_NEXT_7_DAYS,
 				payload: daily,
 			});
 		} catch (err) {
-			setAlert({
-				type: 'danger',
-				message: `Sorry! Location not found! You'll be redirected in few seconds.`,
-			});
-			setTimeout(
-				() => (window.location = process.env.REACT_APP_PROJECT_URL),
-				4800,
-			);
+			if (err.name === TypeError) {
+				setAlert({
+					type: 'danger',
+					message: `Sorry! Location not found! You'll be redirected in few seconds.`,
+				});
+
+				setTimeout(
+					() => (window.location = process.env.REACT_APP_PROJECT_URL),
+					4800,
+				);
+			} else {
+				setAlert({
+					type: 'danger',
+					message: `Sorry! ${err.message}`,
+				});
+
+				// Current
+				dispatch({
+					type: types.SET_CURRENT,
+					payload: JSON.parse(localStorage.getItem('current')),
+				});
+
+				// Hourly
+				dispatch({
+					type: types.SET_NEXT_48_HOURS,
+					payload: JSON.parse(localStorage.getItem('hourly')),
+				});
+
+				// Daily
+				dispatch({
+					type: types.SET_NEXT_7_DAYS,
+					payload: JSON.parse(localStorage.getItem('daily')),
+				});
+			}
 		}
 
 		// Stop Loading
