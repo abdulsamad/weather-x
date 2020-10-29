@@ -137,6 +137,8 @@ function AppContextProvider({ children }) {
 	};
 
 	const setPlace = (city) => {
+		localStorage.setItem('place', city);
+
 		dispatch({
 			type: types.SET_PLACE,
 			payload: city,

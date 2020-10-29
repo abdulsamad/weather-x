@@ -65,9 +65,11 @@ function Home({ history }) {
 	const { city } = useParams();
 
 	useEffect(() => {
+		const lastSavedCity = localStorage.getItem('place');
+
 		if (place !== city) {
 			findByName(city, unit);
-			setPlace(city);
+			navigator.onLine ? setPlace(city) : setPlace(lastSavedCity);
 		}
 
 		// Update spring with new props
@@ -132,7 +134,7 @@ function Home({ history }) {
 					backgroundImage: weather && `url('${backgroundImage}')`,
 				}}>
 				<animated.section style={slideDown} className='mt-5 mb-3 z-10'>
-					<h2 className='text-xl capitalize font-bold'>{city}</h2>
+					<h2 className='text-xl capitalize font-bold'>{place}</h2>
 					<h2 className='text-6xl'>{temp}&deg;</h2>
 					{weather && <h3 className='text-xl'>{weather[0].main}</h3>}
 					<h4 className='text-lg font-light'>Feels like {feels_like}&deg;</h4>
