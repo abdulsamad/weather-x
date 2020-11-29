@@ -17,11 +17,11 @@
 		"recharts": "^1.8.5"
 	},
 	"scripts": {
+		"develop": "netlify dev",
 		"prestart": "postcss src/css/tailwind.css -o src/css/main.css",
 		"prebuild": "NODE_ENV=production postcss src/css/tailwind.css -o src/css/main.css",
 		"start": "react-scripts start",
 		"build": "react-scripts build",
-		"develop": "netlify dev",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject"
 	},
