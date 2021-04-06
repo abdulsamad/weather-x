@@ -25,6 +25,7 @@ function Settings({ setSettingsOpen, history }) {
 		findByName(cityInpVal, unit);
 		setPlace(cityInpVal);
 		history.push(`/${cityInpVal}`);
+
 		setCityInpVal('');
 		setSettingsOpen(false);
 		cityInp.current.blur();
@@ -42,8 +43,10 @@ function Settings({ setSettingsOpen, history }) {
 			({ coords: { latitude: lat, longitude: lon }, timestamp }) => {
 				reverseGeocode(lat, lon).then(
 					({ city, state_district, state, country }) => {
-						findByName(`/${city || state_district || state || country}`, unit);
-						history.push(`/${city || state_district || state || country}`);
+						const newPlace = `${city || state_district || state || country}`;
+						findByName(`/${newPlace}`, unit);
+						history.push(`/${newPlace}`);
+						setPlace(newPlace);
 					},
 				);
 			},
