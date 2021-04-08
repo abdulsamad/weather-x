@@ -1,71 +1,66 @@
 body {
-	min-height: 100vh;
-	min-height: -webkit-fill-available;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
 }
 
 /* Home Component */
 
 .home::after {
-	content: '';
-	position: absolute;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	background-color: rgba(0, 0, 0, 0.5);
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 /* Settings Component */
 
 .settings {
-	background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
-	.settings {
-		-webkit-backdrop-filter: blur(10px);
-		backdrop-filter: blur(10px);
-		background-color: transparent;
-	}
+  .settings {
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background-color: transparent;
+  }
 }
 
 /* Statistics Component */
 
 .chart-height {
-	height: 250px;
+  height: 250px;
 }
 
 .recharts-tooltip-label {
-	color: #1a202c;
+  color: #1a202c;
 }
 
 /* Scrollbar */
 
 @media screen and (min-width: 768px) {
-	::-webkit-scrollbar {
-		height: 3px;
-		width: 10px;
-		box-shadow: 1px 1px 2px #494949;
-	}
+  ::-webkit-scrollbar {
+    height: 3px;
+    width: 10px;
+    box-shadow: 1px 1px 2px #494949;
+  }
 
-	::-webkit-scrollbar-thumb {
-		background: #4299e1;
-		border-radius: 10px;
-		box-shadow: inset 2px 2px 2px rgba(0, 0, 0, 0.25),
-			inset -2px -2px -2px rgba(0, 0, 0, 0.2);
-	}
+  ::-webkit-scrollbar-thumb {
+    background: #4299e1;
+    border-radius: 10px;
+    box-shadow: inset 2px 2px 2px rgba(0, 0, 0, 0.25), inset -2px -2px -2px rgba(0, 0, 0, 0.2);
+  }
 
-	::-webkit-scrollbar-track {
-		background: linear-gradient(
-			90deg,
-			rgba(247, 250, 252, 0.5),
-			rgba(247, 250, 252, 0.25)
-		);
-	}
+  ::-webkit-scrollbar-track {
+    background: linear-gradient(90deg, rgba(247, 250, 252, 0.5), rgba(247, 250, 252, 0.25));
+  }
 }
 
 /* Loader */
 
 .App .loader {
-	border-right-color: transparent;
+  border-right-color: transparent;
 }

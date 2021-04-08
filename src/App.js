@@ -10,23 +10,23 @@ import Next7Days from './components/pages/Next7Days';
 import Statistics from './components/pages/Statistics';
 
 function App() {
-	return (
-		<Router>
-			<AppContextProvider>
-				<Alert />
-				<div className='App relative h-screen w-screen overflow-hidden'>
-					<Switch>
-						<Route path='/:city/Next48Hours' exact component={Next48Hours} />
-						<Route path='/:city/Next7Days' exact component={Next7Days} />
-						<Route path='/:city/Stats' exact component={Statistics} />
-						<Route path='/:city' exact component={Home} />
-						<Route component={Permission} />
-					</Switch>
-					<BottomNav />
-				</div>
-			</AppContextProvider>
-		</Router>
-	);
+  return (
+    <Router>
+      <AppContextProvider>
+        <Alert />
+        <div className='App relative h-screen w-screen overflow-hidden'>
+          <Switch>
+            <Route path='/:city/Next48Hours' exact component={Next48Hours} />
+            <Route path='/:city/Next7Days' exact component={Next7Days} />
+            <Route path='/:city/Stats' exact component={Statistics} />
+            <Route path='/:city' exact component={Home} />
+            <Route component={Permission} />
+          </Switch>
+          <BottomNav />
+        </div>
+      </AppContextProvider>
+    </Router>
+  );
 }
 
 export default App;

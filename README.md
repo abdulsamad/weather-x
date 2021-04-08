@@ -17,19 +17,18 @@
 - Option to view time in 12/24 hours format
 
 ### URL's
+
 https://weatherx-abdulsamad.netlify.app/<code>City Name</code> <br>
 https://weatherx-abdulsamad.netlify.app/<code>City Name</code>/Next48Hours <br>
 https://weatherx-abdulsamad.netlify.app/<code>City Name</code>/Next7Days <br>
 https://weatherx-abdulsamad.netlify.app/<code>City Name</code>/Stats <br>
 
-
 ### Screenshots
 
-[![weatherx app screenshot](readme/home-screenshot.png "Home")](https://weatherx-abdulsamad.netlify.app/Toronto)
----
-[![weatherx app screenshot](readme/next48hours-screenshot.png "Next 48 Hours")](https://weatherx-abdulsamad.netlify.app/Toronto/Next48Hours)
----
-[![weatherx app screenshot](readme/next7days-screenshot.png "Next 7 Days")](https://weatherx-abdulsamad.netlify.app/Toronto/Next7Days)
----
-[![weatherx app screenshot](readme/stats-screenshot.png "Stats")](https://weatherx-abdulsamad.netlify.app/Toronto/Stats)
+## [![weatherx app screenshot](readme/home-screenshot.png 'Home')](https://weatherx-abdulsamad.netlify.app/Toronto)
 
+## [![weatherx app screenshot](readme/next48hours-screenshot.png 'Next 48 Hours')](https://weatherx-abdulsamad.netlify.app/Toronto/Next48Hours)
+
+## [![weatherx app screenshot](readme/next7days-screenshot.png 'Next 7 Days')](https://weatherx-abdulsamad.netlify.app/Toronto/Next7Days)
+
+[![weatherx app screenshot](readme/stats-screenshot.png 'Stats')](https://weatherx-abdulsamad.netlify.app/Toronto/Stats)

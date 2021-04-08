@@ -7,239 +7,229 @@ const AppContext = createContext();
 const AppContextDispatch = createContext();
 
 function AppContextProvider({ children }) {
-	const initialState = {
-		place: null,
-		loading: true,
-		current: {},
-		next48Hours: [],
-		next7Days: [],
-		unit: localStorage.getItem('unit') || 'metric',
-		timeFormat: parseInt(localStorage.getItem('timeFormat')) || 24,
-		alert: null,
-		downloadBackground: JSON.parse(localStorage.getItem('downloadBackground')),
-	};
+  const initialState = {
+    place: null,
+    loading: true,
+    current: {},
+    next48Hours: [],
+    next7Days: [],
+    unit: localStorage.getItem('unit') || 'metric',
+    timeFormat: parseInt(localStorage.getItem('timeFormat')) || 24,
+    alert: null,
+    downloadBackground: JSON.parse(localStorage.getItem('downloadBackground')),
+  };
 
-	const [state, dispatch] = useReducer(Reducer, initialState);
+  const [state, dispatch] = useReducer(Reducer, initialState);
 
-	const findByName = async (place, unit) => {
-		try {
-			// Check internet connection
-			if (navigator.onLine === false)
-				throw new Error(
-					`No Internet Connection! 😓
+  const findByName = async (place, unit) => {
+    try {
+      // Check internet connection
+      if (navigator.onLine === false)
+        throw new Error(
+          `No Internet Connection! 😓
 					Please connect to internet to get the latest info.`,
-				);
+        );
 
-			// Geocode the entered place
-			const geocodesArr = await geocode(place);
-			const { lat, lon } = geocodesArr[0];
+      // Geocode the entered place
+      const geocodesArr = await geocode(place);
+      const { lat, lon } = geocodesArr[0];
 
-			// OpenWeatherMap API call (API Key will be added in serverless function)
-			const onecall = await axios.get('/api/onecall', {
-				params: {
-					lat: lat,
-					lon: lon,
-					exclude: 'minutely',
-					units: unit,
-				},
-			});
+      // OpenWeatherMap API call (API Key will be added in serverless function)
+      const onecall = await axios.get('/api/onecall', {
+        params: {
+          lat: lat,
+          lon: lon,
+          exclude: 'minutely',
+          units: unit,
+        },
+      });
 
-			const { current, daily, hourly } = onecall.data;
+      const { current, daily, hourly } = onecall.data;
 
-			// Current
-			localStorage.setItem('current', JSON.stringify(current));
-			dispatch({
-				type: types.SET_CURRENT,
-				payload: current,
-			});
+      // Current
+      localStorage.setItem('current', JSON.stringify(current));
+      dispatch({
+        type: types.SET_CURRENT,
+        payload: current,
+      });
 
-			// Hourly
-			localStorage.setItem('hourly', JSON.stringify(hourly));
-			dispatch({
-				type: types.SET_NEXT_48_HOURS,
-				payload: hourly,
-			});
+      // Hourly
+      localStorage.setItem('hourly', JSON.stringify(hourly));
+      dispatch({
+        type: types.SET_NEXT_48_HOURS,
+        payload: hourly,
+      });
 
-			// Daily
-			localStorage.setItem('daily', JSON.stringify(daily));
-			dispatch({
-				type: types.SET_NEXT_7_DAYS,
-				payload: daily,
-			});
-		} catch (err) {
-			if (err.name === TypeError) {
-				setAlert({
-					type: 'danger',
-					message: `Sorry! Location not found! You'll be redirected in few seconds.`,
-				});
+      // Daily
+      localStorage.setItem('daily', JSON.stringify(daily));
+      dispatch({
+        type: types.SET_NEXT_7_DAYS,
+        payload: daily,
+      });
+    } catch (err) {
+      if (err.name === TypeError) {
+        setAlert({
+          type: 'danger',
+          message: `Sorry! Location not found! You'll be redirected in few seconds.`,
+        });
 
-				setTimeout(
-					() => (window.location = process.env.REACT_APP_PROJECT_URL),
-					4800,
-				);
-			} else {
-				setAlert({
-					type: 'danger',
-					message: `Sorry! ${err.message}`,
-				});
+        setTimeout(() => (window.location = process.env.REACT_APP_PROJECT_URL), 4800);
+      } else {
+        setAlert({
+          type: 'danger',
+          message: `Sorry! ${err.message}`,
+        });
 
-				// Current
-				dispatch({
-					type: types.SET_CURRENT,
-					payload: JSON.parse(localStorage.getItem('current')),
-				});
+        // Current
+        dispatch({
+          type: types.SET_CURRENT,
+          payload: JSON.parse(localStorage.getItem('current')),
+        });
 
-				// Hourly
-				dispatch({
-					type: types.SET_NEXT_48_HOURS,
-					payload: JSON.parse(localStorage.getItem('hourly')),
-				});
+        // Hourly
+        dispatch({
+          type: types.SET_NEXT_48_HOURS,
+          payload: JSON.parse(localStorage.getItem('hourly')),
+        });
 
-				// Daily
-				dispatch({
-					type: types.SET_NEXT_7_DAYS,
-					payload: JSON.parse(localStorage.getItem('daily')),
-				});
-			}
-		}
+        // Daily
+        dispatch({
+          type: types.SET_NEXT_7_DAYS,
+          payload: JSON.parse(localStorage.getItem('daily')),
+        });
+      }
+    }
 
-		// Stop Loading
-		dispatch({
-			type: types.SET_LOADING,
-			payload: false,
-		});
-	};
+    // Stop Loading
+    dispatch({
+      type: types.SET_LOADING,
+      payload: false,
+    });
+  };
 
-	const geocode = async (place) => {
-		const call = await axios.get('https://nominatim.openstreetmap.org/search', {
-			params: {
-				q: place,
-				format: 'json',
-			},
-		});
+  const geocode = async (place) => {
+    const call = await axios.get('https://nominatim.openstreetmap.org/search', {
+      params: {
+        q: place,
+        format: 'json',
+      },
+    });
 
-		return await call.data;
-	};
+    return await call.data;
+  };
 
-	const reverseGeocode = async (lat, lon) => {
-		const call = await axios.get(
-			'https://nominatim.openstreetmap.org/reverse',
-			{
-				params: {
-					lat,
-					lon,
-					format: 'json',
-				},
-			},
-		);
+  const reverseGeocode = async (lat, lon) => {
+    const call = await axios.get('https://nominatim.openstreetmap.org/reverse', {
+      params: {
+        lat,
+        lon,
+        format: 'json',
+      },
+    });
 
-		return await call.data.address;
-	};
+    return await call.data.address;
+  };
 
-	const setPlace = (city) => {
-		localStorage.setItem('place', city);
+  const setPlace = (city) => {
+    localStorage.setItem('place', city);
 
-		dispatch({
-			type: types.SET_PLACE,
-			payload: city,
-		});
-	};
+    dispatch({
+      type: types.SET_PLACE,
+      payload: city,
+    });
+  };
 
-	const setAlert = ({ type, message }) => {
-		dispatch({
-			type: types.SET_ALERT,
-			payload: { type, message },
-		});
+  const setAlert = ({ type, message }) => {
+    dispatch({
+      type: types.SET_ALERT,
+      payload: { type, message },
+    });
 
-		setTimeout(removeAlert, 5000);
-	};
+    setTimeout(removeAlert, 5000);
+  };
 
-	const removeAlert = () => {
-		dispatch({
-			type: types.REMOVE_ALERT,
-		});
-	};
+  const removeAlert = () => {
+    dispatch({
+      type: types.REMOVE_ALERT,
+    });
+  };
 
-	const setTimeFormat = (timeFormat) => {
-		localStorage.setItem('timeFormat', timeFormat);
+  const setTimeFormat = (timeFormat) => {
+    localStorage.setItem('timeFormat', timeFormat);
 
-		dispatch({
-			type: types.SET_TIME_FORMAT,
-			payload: timeFormat,
-		});
-	};
+    dispatch({
+      type: types.SET_TIME_FORMAT,
+      payload: timeFormat,
+    });
+  };
 
-	const setUnit = (unit) => {
-		localStorage.setItem('unit', unit);
+  const setUnit = (unit) => {
+    localStorage.setItem('unit', unit);
 
-		dispatch({
-			type: types.SET_UNIT,
-			payload: unit,
-		});
-	};
+    dispatch({
+      type: types.SET_UNIT,
+      payload: unit,
+    });
+  };
 
-	const setDownloadBackgroundOnLoad = (downloadBackground) => {
-		localStorage.setItem('downloadBackground', downloadBackground);
+  const setDownloadBackgroundOnLoad = (downloadBackground) => {
+    localStorage.setItem('downloadBackground', downloadBackground);
 
-		dispatch({
-			type: types.SET_BG_DOWNLOAD_ON_LOAD,
-			payload: downloadBackground,
-		});
-	};
+    dispatch({
+      type: types.SET_BG_DOWNLOAD_ON_LOAD,
+      payload: downloadBackground,
+    });
+  };
 
-	return (
-		<AppContext.Provider
-			value={{
-				current: state.current,
-				next48Hours: state.next48Hours,
-				next7Days: state.next7Days,
-				unit: state.unit,
-				timeFormat: state.timeFormat,
-				alert: state.alert,
-				downloadBackground: state.downloadBackground,
-				loading: state.loading,
-				place: state.place,
-			}}>
-			<AppContextDispatch.Provider
-				value={{
-					setUnit,
-					setTimeFormat,
-					setAlert,
-					setPlace,
-					removeAlert,
-					geocode,
-					reverseGeocode,
-					findByName,
-					setDownloadBackgroundOnLoad,
-				}}>
-				{children}
-			</AppContextDispatch.Provider>
-		</AppContext.Provider>
-	);
+  return (
+    <AppContext.Provider
+      value={{
+        current: state.current,
+        next48Hours: state.next48Hours,
+        next7Days: state.next7Days,
+        unit: state.unit,
+        timeFormat: state.timeFormat,
+        alert: state.alert,
+        downloadBackground: state.downloadBackground,
+        loading: state.loading,
+        place: state.place,
+      }}>
+      <AppContextDispatch.Provider
+        value={{
+          setUnit,
+          setTimeFormat,
+          setAlert,
+          setPlace,
+          removeAlert,
+          geocode,
+          reverseGeocode,
+          findByName,
+          setDownloadBackgroundOnLoad,
+        }}>
+        {children}
+      </AppContextDispatch.Provider>
+    </AppContext.Provider>
+  );
 }
 
 const useAppContextState = () => {
-	const context = useContext(AppContext);
+  const context = useContext(AppContext);
 
-	if (context === undefined) {
-		throw new Error(
-			'useAppContextState must be used within a AppContext Provider.',
-		);
-	}
+  if (context === undefined) {
+    throw new Error('useAppContextState must be used within a AppContext Provider.');
+  }
 
-	return context;
+  return context;
 };
 
 const useAppContextDispatch = () => {
-	const context = useContext(AppContextDispatch);
+  const context = useContext(AppContextDispatch);
 
-	if (context === undefined) {
-		throw new Error(
-			'useAppContextDispatch must be used within a AppContextDispatch Provider.',
-		);
-	}
+  if (context === undefined) {
+    throw new Error('useAppContextDispatch must be used within a AppContextDispatch Provider.');
+  }
 
-	return context;
+  return context;
 };
 
 export { AppContextProvider, useAppContextState, useAppContextDispatch };
