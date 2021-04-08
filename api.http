@@ -1,0 +1,14 @@
+### Nominatim OpenStreet Map (GeoCoding)
+GET https://nominatim.openstreetmap.org/search?q=toronto&format=json HTTP/1.1
+
+### Nominatim OpenStreet Map (Reverse GeoCoding)
+GET https://nominatim.openstreetmap.org/reverse?lat={{lat}}&lon={{lon}}&format=json HTTP/1.1
+
+### OpenWeather One Call API 
+GET https://api.openweathermap.org/data/2.5/onecall?lat={{lat}}&lon={{lon}}&exclude=minutely&units=imperial&appid={{OPEN_WEATHER_MAP_API_KEY}} HTTP/1.1
+
+### Source Unsplash API
+GET https://source.unsplash.com/640x360?nature,water HTTP/1.1
+
+### Netlify Serverless
+GET http://localhost:8888/api/onecall?lat={{lat}}&lon={{lon}}&exclude=minutely&units=metric HTTP/1.1
