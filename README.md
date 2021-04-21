@@ -16,7 +16,7 @@
 - Option to view details in Imperial, Metric, and Universal units
 - Option to view time in 12/24 hours format
 
-### URL's
+### :link: URL's
 
 https://weatherx-abdulsamad.netlify.app/<code>City Name</code> <br>
 https://weatherx-abdulsamad.netlify.app/<code>City Name</code>/Next48Hours <br>
