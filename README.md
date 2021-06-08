@@ -1,6 +1,6 @@
 ## WeatherX
 
-> #### A clean and minimal weather forecast PWA aim towards mobile
+> A clean and minimal weather forecast PWA aims towards mobile
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/24388ee8-9efc-4a0e-a1c9-a98bc5011275/deploy-status)](https://app.netlify.com/sites/weatherx-abdulsamad/deploys)
 
@@ -16,20 +16,19 @@
 - Option to view details in Imperial, Metric, and Universal units
 - Option to view time in 12/24 hours format
 
-### URL's
+### :link: URL's
+
 https://weatherx-abdulsamad.netlify.app/<code>City Name</code> <br>
 https://weatherx-abdulsamad.netlify.app/<code>City Name</code>/Next48Hours <br>
 https://weatherx-abdulsamad.netlify.app/<code>City Name</code>/Next7Days <br>
 https://weatherx-abdulsamad.netlify.app/<code>City Name</code>/Stats <br>
 
-
 ### Screenshots
 
-[![weatherx app screenshot](readme/home-screenshot.png "Home")](https://weatherx-abdulsamad.netlify.app/Toronto)
----
-[![weatherx app screenshot](readme/next48hours-screenshot.png "Next 48 Hours")](https://weatherx-abdulsamad.netlify.app/Toronto/Next48Hours)
----
-[![weatherx app screenshot](readme/next7days-screenshot.png "Next 7 Days")](https://weatherx-abdulsamad.netlify.app/Toronto/Next7Days)
----
-[![weatherx app screenshot](readme/stats-screenshot.png "Stats")](https://weatherx-abdulsamad.netlify.app/Toronto/Stats)
+## [![weatherx app screenshot](readme/home-screenshot.png 'Home')](https://weatherx-abdulsamad.netlify.app/Toronto)
 
+## [![weatherx app screenshot](readme/next48hours-screenshot.png 'Next 48 Hours')](https://weatherx-abdulsamad.netlify.app/Toronto/Next48Hours)
+
+## [![weatherx app screenshot](readme/next7days-screenshot.png 'Next 7 Days')](https://weatherx-abdulsamad.netlify.app/Toronto/Next7Days)
+
+[![weatherx app screenshot](readme/stats-screenshot.png 'Stats')](https://weatherx-abdulsamad.netlify.app/Toronto/Stats)
