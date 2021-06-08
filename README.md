@@ -1,6 +1,6 @@
 ## WeatherX
 
-> A clean and minimal weather forecast PWA aim towards mobile
+> A clean and minimal weather forecast PWA aims towards mobile
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/24388ee8-9efc-4a0e-a1c9-a98bc5011275/deploy-status)](https://app.netlify.com/sites/weatherx-abdulsamad/deploys)
 
