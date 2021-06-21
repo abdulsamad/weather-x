@@ -26,3 +26,6 @@ yarn-error.log*
 
 # Local Netlify folder
 .netlify
+
+# Tailwind dev file
+src/css/main.css
