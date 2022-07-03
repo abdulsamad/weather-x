@@ -23,6 +23,30 @@ https://weatherx-abdulsamad.netlify.app/<code>City Name</code>/Next48Hours <br>
 https://weatherx-abdulsamad.netlify.app/<code>City Name</code>/Next7Days <br>
 https://weatherx-abdulsamad.netlify.app/<code>City Name</code>/Stats <br>
 
+
+### Installation
+Clone the repository
+```bash
+git clone https://github.com/abdulsamad/weatherx.git
+```
+
+Install dependencies
+```bash
+yarn 
+```
+Netlify CLI is also required to run netlify serverless functions
+
+```bash
+yarn install -g netlify-cli
+```
+
+### Environment Variables
+Create a .env file in the project root and add the following variables
+```js
+OPEN_WEATHER_MAP_API_KEY = /* Open Weather Map API Key */
+REACT_APP_PROJECT_URL = /* Production URL */
+```
+
 ### Screenshots
 
 ## [![weatherx app screenshot](readme/home-screenshot.png 'Home')](https://weatherx-abdulsamad.netlify.app/Toronto)
