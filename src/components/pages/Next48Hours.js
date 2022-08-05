@@ -13,8 +13,8 @@ function Next48Hours() {
   const [trail, setTrail] = useTrail(next48Hours.length, () => ({
     config: {
       mass: 1,
-      tension: 300,
-      friction: 60,
+      tension: 120,
+      friction: 14,
     },
     from: {
       opacity: 0,
