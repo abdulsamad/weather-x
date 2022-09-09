@@ -52,9 +52,9 @@ function Next48Hours() {
       <div className="vertical-scroll h-full w-full overflow-auto container md:px-2 mx-auto">
         <h2 className="text-center font-bold my-5 text-lg">Next 48h</h2>
         {slideDownAnimation.map(
-          ({ item, key, props }) =>
+          ({ key, props }) =>
             next48Hours && (
-              <animated.div key={key} style={props}>
+              <animated.div key={key} style={props} className="origin-bottom">
                 {next48Hours.map(
                   ({ weather, wind_speed, wind_deg, temp, dt }, index) => (
                     <Fragment key={dt}>
