@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import dayjs from "dayjs";
+import { animated, useTransition } from "react-spring";
 import {
   useAppContextDispatch,
   useAppContextState,
@@ -12,6 +13,12 @@ function Next48Hours() {
     useAppContextState();
   const { findByName, setPlace } = useAppContextDispatch();
   const { city } = useParams();
+
+  const slideDownAnimation = useTransition(next48Hours.length, null, {
+    from: { opacity: 0, transform: "scaleY(0.5)" },
+    enter: { opacity: 1, transform: "scaleY(1)" },
+    config: { tension: 200 },
+  });
 
   useEffect(() => {
     if (place !== city) {
@@ -44,70 +51,76 @@ function Next48Hours() {
     >
       <div className="vertical-scroll h-full w-full overflow-auto container md:px-2 mx-auto">
         <h2 className="text-center font-bold my-5 text-lg">Next 48h</h2>
-        {next48Hours &&
-          next48Hours.map(
-            ({ weather, wind_speed, wind_deg, temp, dt }, index) => (
-              <Fragment key={dt}>
-                {index === 0 && dayjs(dt * 1000).hour() !== 0 && (
-                  <h3 className="text-center uppercase mb-2 mt-4 font-semibold">
-                    {dayjs(dt * 1000).format("dddd")}&nbsp;
-                    <span className="text-light">
-                      {dayjs(dt * 1000).format("DD.MM")}
-                    </span>
-                  </h3>
+        {slideDownAnimation.map(
+          ({ item, key, props }) =>
+            next48Hours && (
+              <animated.div key={key} style={props}>
+                {next48Hours.map(
+                  ({ weather, wind_speed, wind_deg, temp, dt }, index) => (
+                    <Fragment key={dt}>
+                      {index === 0 && dayjs(dt * 1000).hour() !== 0 && (
+                        <h3 className="text-center uppercase mb-2 mt-4 font-semibold">
+                          {dayjs(dt * 1000).format("dddd")}&nbsp;
+                          <span className="text-light">
+                            {dayjs(dt * 1000).format("DD.MM")}
+                          </span>
+                        </h3>
+                      )}
+                      {dayjs(dt * 1000).hour() === 0 && (
+                        <h3 className="text-center uppercase mb-2 mt-4 font-semibold">
+                          {dayjs(dt * 1000).format("dddd")}&nbsp;
+                          <span className="text-light">
+                            {dayjs(dt * 1000).format("DD.MM")}
+                          </span>
+                        </h3>
+                      )}
+                      <div className="flex bg-gray-100 bg-opacity-25 rounded-lg p-2 my-2">
+                        <div className="w-1/2 flex flex-col items-start my-1">
+                          <span className="font-semibold h-8 flex items-center text-xl">
+                            {timeFormat === 12
+                              ? dayjs(dt * 1000).format("hh:mm A")
+                              : dayjs(dt * 1000).format("HH:mm")}
+                          </span>
+                          <span className="text-lg capitalize">
+                            {weather[0].description}
+                          </span>
+                        </div>
+                        <div className="w-1/4 flex flex-col items-center text-center my-1 text-lg">
+                          <div className="h-8">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              className="w-6 h-6 fill-current"
+                              style={{
+                                transform: `rotateZ(${wind_deg}deg)`,
+                              }}
+                            >
+                              <path d="M24 0l-6 22-8.129-7.239 7.802-8.234-10.458 7.227-7.215-1.754 24-12zm-15 16.668v7.332l3.258-4.431-3.258-2.901z" />
+                            </svg>
+                          </div>
+                          <span className="truncate">
+                            {unit === "imperial"
+                              ? wind_speed + " mi/hr"
+                              : wind_speed + " m/s"}
+                          </span>
+                        </div>
+                        <div className="w-1/4 flex flex-col items-center my-1 text-lg">
+                          <span className="">{temp}&deg;</span>
+                          <img
+                            src={icons["_" + weather[0].icon]}
+                            className="h-8 transform scale-150"
+                            alt="weather icon"
+                          />
+                        </div>
+                      </div>
+                    </Fragment>
+                  )
                 )}
-                {dayjs(dt * 1000).hour() === 0 && (
-                  <h3 className="text-center uppercase mb-2 mt-4 font-semibold">
-                    {dayjs(dt * 1000).format("dddd")}&nbsp;
-                    <span className="text-light">
-                      {dayjs(dt * 1000).format("DD.MM")}
-                    </span>
-                  </h3>
-                )}
-                <div className="flex bg-gray-100 bg-opacity-25 rounded-lg p-2 my-2">
-                  <div className="w-1/2 flex flex-col items-start my-1">
-                    <span className="font-semibold h-8 flex items-center text-xl">
-                      {timeFormat === 12
-                        ? dayjs(dt * 1000).format("hh:mm A")
-                        : dayjs(dt * 1000).format("HH:mm")}
-                    </span>
-                    <span className="text-lg capitalize">
-                      {weather[0].description}
-                    </span>
-                  </div>
-                  <div className="w-1/4 flex flex-col items-center text-center my-1 text-lg">
-                    <div className="h-8">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        className="w-6 h-6 fill-current"
-                        style={{
-                          transform: `rotateZ(${wind_deg}deg)`,
-                        }}
-                      >
-                        <path d="M24 0l-6 22-8.129-7.239 7.802-8.234-10.458 7.227-7.215-1.754 24-12zm-15 16.668v7.332l3.258-4.431-3.258-2.901z" />
-                      </svg>
-                    </div>
-                    <span className="truncate">
-                      {unit === "imperial"
-                        ? wind_speed + " mi/hr"
-                        : wind_speed + " m/s"}
-                    </span>
-                  </div>
-                  <div className="w-1/4 flex flex-col items-center my-1 text-lg">
-                    <span className="">{temp}&deg;</span>
-                    <img
-                      src={icons["_" + weather[0].icon]}
-                      className="h-8 transform scale-150"
-                      alt="weather icon"
-                    />
-                  </div>
-                </div>
-              </Fragment>
+              </animated.div>
             )
-          )}
+        )}
       </div>
     </div>
   );
