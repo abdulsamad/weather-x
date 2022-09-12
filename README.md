@@ -16,7 +16,7 @@ A clean and minimal weather forecast PWA aims toward mobile
 - View time in 12/24 hours format
 - Option to download a new background image on every load
 
-### :link: URL's
+### :link: URL Structures
 
 https://weatherx-abdulsamad.netlify.app/<code>City Name</code> <br>
 https://weatherx-abdulsamad.netlify.app/<code>City Name</code>/Next48Hours <br>
