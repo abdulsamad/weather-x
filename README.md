@@ -1,20 +1,21 @@
 ## WeatherX
 
-A clean and minimal weather forecast PWA aims toward mobile
+WeatherX is a clean and minimal Progressive Web App (PWA) that provides accurate and reliable weather forecasts for mobile users. With features such as current weather, 48-hour and 7-day forecasts, interactive charts, city search, dynamic backgrounds, unit options, and 12/24 hour time formats, WeatherX makes it easy to plan your day and stay informed.
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/24388ee8-9efc-4a0e-a1c9-a98bc5011275/deploy-status)](https://app.netlify.com/sites/weatherx-abdulsamad/deploys)
 
 ### :sparkles: Features
 
-- Shows current weather forecast
-- Shows weather forecast for next 48 hours
-- Shows weather forecast for next 7 days
-- View the Next 48 hours, Next 7 days, and UV Index data in interactive charts
-- Search weather forecast for city
-- Dynamic background images according to weather 
-- View details in Imperial, Metric, and Universal units
-- View time in 12/24 hours format
-- Option to download a new background image on every load
+- Current weather forecast
+- 48-hour and 7-day weather forecasts
+- Interactive charts for Next 48 hours, Next 7 days, and UV Index data
+- Search for weather forecasts by city
+- Dynamic background images that reflect the weather conditions 
+- Option to view details in Imperial, Metric, and Universal units
+- Option to view time in 12/24-hour format
+- Get an awesome new background everytime you open the app, you'll never tire of checking the weather.
+
+With these features, our web application provides an accurate and reliable way to stay informed about the weather, plan your day, and enjoy a beautiful and engaging user experience.
 
 ### :link: URL Structures
 
